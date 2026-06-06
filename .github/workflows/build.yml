@@ -11,7 +11,7 @@ jobs:
           distribution: 'temurin'
       - name: Generate Gradle Wrapper
         working-directory: ${{ github.workspace }}
-        run: gradle wrapper --gradle-version 8.5
+        run: gradle wrapper --gradle-version 8.9
       - name: Build APK
         working-directory: ${{ github.workspace }}
         run: ./gradlew assembleDebug
