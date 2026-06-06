@@ -3,29 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,maximum-scale=1">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="健康生活记录">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#faf5f7">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23faf5f7'/><text x='50' y='68' font-size='55' text-anchor='middle'>🌸</text></svg>">
 <title>🌸 健康生活记录</title>
 <style>
 :root{
-  --bg:#faf5f7;--card:#ffffff;--text:#4a3548;--accent:#e91e63;--gold:#f4a226;
-  --danger:#e5396a;--success:#66bb6a;--info:#5c9ce6;--border:#f0e0e6;
-  --accent-light:#fce4ec;--radius:14px
+  --bg:#fff5f7;--card:#fff;--text:#4a3040;--accent:#e0306c;--gold:#f0a030;
+  --danger:#e0306c;--success:#4ade80;--info:#a855f7;--border:#f0dce4;--radius:14px;
+  --period-actual:rgba(233,30,105,.15);--period-pred:rgba(233,30,105,.06);
+  --ovu:rgba(168,85,247,.12);--fertile:rgba(168,85,247,.06)
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-  background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
-.app{max-width:480px;margin:0 auto;padding:0 0 85px}
+  background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-tap-highlight-color:transparent;
+  padding-top:env(safe-area-inset-top)}
+.app{max-width:480px;margin:0 auto;padding:0 0 90px}
 header{position:sticky;top:0;z-index:100;background:linear-gradient(180deg,var(--bg) 80%,transparent);padding:14px 16px 10px;
-  text-align:center;backdrop-filter:blur(10px)}
-header h1{font-size:19px;color:var(--accent);font-weight:800;letter-spacing:1px}
+  text-align:center;backdrop-filter:blur(10px);padding-top:calc(14px + env(safe-area-inset-top))}
+header h1{font-size:19px;background:linear-gradient(135deg,var(--accent),#f080a0);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:800;letter-spacing:1px}
 nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
-  background:var(--card);display:flex;border-top:1px solid var(--border);z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.05)}
-nav button{flex:1;padding:7px 2px;background:none;border:none;color:#b0a0a8;font-size:10px;
+  background:var(--card);display:flex;border-top:1px solid var(--border);z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:8px 2px;background:none;border:none;color:#bbb;font-size:10px;
   cursor:pointer;transition:.2s;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative}
 nav button .icon{font-size:19px;line-height:1}
 nav button.active{color:var(--accent)}
@@ -34,99 +31,126 @@ nav button .badge{position:absolute;top:1px;right:calc(50% - 20px);background:va
 .panel{display:none;padding:12px 16px;animation:slideUp .3s ease}
 .panel.active{display:block}
 @keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:10px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(0,0,0,.03)}
+.card{background:var(--card);border-radius:var(--radius);padding:14px;margin-bottom:10px;border:1px solid var(--border);box-shadow:0 1px 4px rgba(200,160,180,.08)}
 .card h3{font-size:14px;margin-bottom:10px;color:var(--accent);display:flex;align-items:center;gap:6px}
-.btn{padding:9px 16px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;
+.btn{padding:9px 16px;border:none;border-radius:20px;cursor:pointer;font-size:13px;font-weight:600;
   transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:4px}
 .btn:active{transform:scale(.96)}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-danger{background:var(--danger);color:#fff}
 .btn-success{background:var(--success);color:#fff}
-.btn-outline{background:var(--card);border:1px solid var(--border);color:var(--text)}
-.btn-sm{padding:5px 10px;font-size:11px}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-sm{padding:5px 12px;font-size:11px;border-radius:14px}
 .btn-block{width:100%;margin-top:6px}
-input,select,textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;
+input,select,textarea{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:12px;
   background:var(--bg);color:var(--text);font-size:14px;font-family:inherit}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(233,30,99,.12)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(224,48,108,.12)}
 textarea{resize:vertical;min-height:60px}
-label{display:block;margin-bottom:4px;font-size:12px;color:#a09098;font-weight:500}
+label{display:block;margin-bottom:4px;font-size:12px;color:#b090a0;font-weight:500}
 .form-group{margin-bottom:10px}
 .form-row{display:flex;gap:8px}.form-row>*{flex:1}
 
-/* Calendar */
+/* 日历 */
 .cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.cal-header button{background:var(--card);border:1px solid var(--border);color:var(--text);font-size:16px;cursor:pointer;
+.cal-header button{background:none;border:none;color:var(--text);font-size:18px;cursor:pointer;
   padding:6px 10px;border-radius:8px;transition:.15s}
-.cal-header button:active{background:var(--accent-light)}
-.cal-title{font-size:16px;font-weight:700;min-width:130px;text-align:center;color:var(--accent)}
+.cal-header button:active{background:var(--border)}
+.cal-title{font-size:16px;font-weight:700;min-width:130px;text-align:center}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:1px}
-.cal-day-header{font-size:10px;color:#b0a0a8;padding:6px 0;font-weight:600}
+.cal-day-header{font-size:10px;color:#c0a0b0;padding:6px 0;font-weight:600}
 .cal-day-header.weekend{color:var(--danger)}
-.cal-day{padding:3px 1px;border-radius:8px;cursor:pointer;font-size:12px;min-height:48px;
+.cal-day{padding:2px 1px;border-radius:6px;cursor:pointer;font-size:12px;min-height:46px;
   transition:.1s;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-.cal-day:active{background:var(--accent-light)}
-.cal-day .solar-date{font-weight:500;margin-top:2px}
-/* Today */
-.cal-day.today{background:var(--accent)!important;color:#fff!important;font-weight:800!important;
-  box-shadow:0 0 0 4px rgba(233,30,99,.25),0 0 16px rgba(233,30,99,.15);transform:scale(1.08);z-index:10;animation:todayPulse 2s ease-in-out infinite}
-.cal-day.today .lunar{color:rgba(255,255,255,.85)!important}
-@keyframes todayPulse{0%,100%{box-shadow:0 0 0 4px rgba(233,30,99,.25),0 0 16px rgba(233,30,99,.15)}50%{box-shadow:0 0 0 6px rgba(233,30,99,.15),0 0 24px rgba(233,30,99,.25)}}
-.cal-day.empty{cursor:default}
+.cal-day:active{background:rgba(224,48,108,.10)}
+.cal-day .solar-date{font-weight:500;margin-top:2px;width:22px;height:22px;line-height:22px;border-radius:50%}
 .cal-day .lunar{font-size:9px;line-height:1.15;margin-top:1px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* Holidays */
+.cal-day.empty{cursor:default}
+
+/* 经期标记 */
+.cal-day.period-actual{background:var(--period-actual)}
+.cal-day.period-actual .solar-date{background:var(--danger);color:#fff;font-weight:700}
+.cal-day.period-pred{background:var(--period-pred)}
+.cal-day.period-pred .solar-date{border:1.5px dashed var(--danger);color:var(--danger)}
+.cal-day.ovulation .solar-date{background:var(--info);color:#fff;font-weight:700}
+.cal-day.fertile{background:var(--fertile)}
+.cal-day.fertile .solar-date{color:var(--info)}
+
+/* 今天 */
+.cal-day.today{background:var(--accent) !important;color:#fff !important;font-weight:800 !important;
+  box-shadow:0 0 0 4px rgba(224,48,108,.5),0 0 18px rgba(224,48,108,.35);transform:scale(1.06);z-index:10;
+  animation:todayPulse 2s ease-in-out infinite;border-radius:10px}
+.cal-day.today .solar-date{background:transparent !important;color:#fff !important;border:none !important}
+.cal-day.today .lunar{color:rgba(255,255,255,.8) !important}
+.cal-day.today .cal-marks span{color:rgba(255,255,255,.85) !important}
+
+/* 节假日/生日 */
 .cal-day.holiday .solar-date{color:var(--danger);font-weight:700}
-.cal-day.holiday .lunar{color:var(--danger)}
-/* Period: actual (today in recorded range) */
-.cal-day.period{background:rgba(233,30,105,.12)}
-.cal-day.period .solar-date{color:var(--danger)}
-/* Predicted period (future) */
-.cal-day.period-pred{background:rgba(233,30,105,.05)}
-/* Ovulation */
-.cal-day.ovulation{background:rgba(92,156,230,.08)}
-.cal-day.ovulation .solar-date{color:var(--info)}
-/* Birthday - gold highlight */
-.cal-day.birthday{background:rgba(244,162,38,.15)}
-.cal-day.birthday .solar-date{color:var(--gold);font-weight:700}
-.cal-day.birthday .lunar{color:var(--gold)}
+.cal-day.birthday-day{background:rgba(240,160,48,.15)}
+.cal-day.birthday-day .solar-date{color:var(--gold);font-weight:700}
 
-/* Bottom marks row */
+/* 标记行 */
 .cal-marks{display:flex;gap:1px;justify-content:center;margin-top:1px;flex-wrap:wrap;max-width:100%}
-.cal-mark{font-size:7px;line-height:1}
-.cal-mark.per{color:var(--danger)}
-.cal-mark.ovu{color:var(--info)}
-.cal-mark.bd{font-size:9px}
-.cal-mark.sym{font-size:7px}
+.cal-marks span{font-size:7px;line-height:1}
 
-/* Legend */
-.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:10px;color:#999;justify-content:center}
-.legend .dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:2px}
-.legend .dot.red{background:var(--danger)}
-.legend .dot.pink{background:rgba(233,30,105,.35)}
-.legend .dot.blue{background:var(--info)}
+@keyframes todayPulse{0%,100%{box-shadow:0 0 0 4px rgba(224,48,108,.5),0 0 18px rgba(224,48,108,.35)}50%{box-shadow:0 0 0 7px rgba(224,48,108,.25),0 0 26px rgba(224,48,108,.5)}}
 
-.item-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-.item-row:last-child{border-bottom:none}
-.item-actions{display:flex;gap:4px;flex-shrink:0;margin-left:8px}
+/* 详情卡片 */
+.detail-card{padding:12px}
+.detail-date{font-size:18px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.detail-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.detail-badge.period{background:var(--danger);color:#fff}
+.detail-badge.pred{background:rgba(233,30,105,.15);color:var(--danger);border:1px dashed var(--danger)}
+.detail-badge.ovu{background:var(--info);color:#fff}
+.detail-badge.fert{background:rgba(168,85,247,.12);color:var(--info)}
+.detail-section{margin:10px 0;padding-top:8px;border-top:1px solid var(--border)}
+.detail-section h4{font-size:12px;color:#b090a0;margin-bottom:6px}
+.detail-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* 经期面板 */
+.period-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.period-stat{background:var(--bg);border-radius:12px;padding:10px 6px;text-align:center}
+.period-stat .val{font-size:22px;font-weight:700;color:var(--accent)}
+.period-stat .lbl{font-size:10px;color:#b090a0;margin-top:2px}
+
+.cycle-bar-wrap{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:10px 0}
+.cycle-period{background:var(--danger)}.cycle-safe{background:var(--success)}.cycle-normal{background:var(--border)}
+
+.prediction-card{background:var(--bg);border-radius:12px;padding:12px;margin:10px 0;border-left:3px solid var(--accent)}
+.prediction-card .pred-line{font-size:13px;line-height:1.8}
+.prediction-card .pred-disclaimer{font-size:10px;color:#c0a0b0;margin-top:6px;font-style:italic}
+
+/* 消息提示 */
+.humane-msg{font-size:13px;color:var(--accent);padding:8px 12px;background:rgba(224,48,108,.06);border-radius:10px;margin:8px 0;line-height:1.6}
+
+/* 症状标签 */
+.symptom-tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.symptom-tag{padding:5px 12px;border-radius:14px;font-size:12px;cursor:pointer;transition:.15s;
+  background:var(--bg);border:1px solid var(--border);color:var(--text);user-select:none}
+.symptom-tag.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* 小确幸编辑 */
+.joy-edit-area{background:var(--bg);border-radius:12px;padding:14px;margin-top:8px}
+.joy-edit-area textarea{margin-bottom:6px;font-size:13px}
+.joy-list{margin-top:4px}
+.joy-item{font-size:13px;padding:4px 0;display:flex;align-items:center;gap:4px}
+
+/* 提醒设置 */
+.reminder-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+.reminder-row:last-child{border:none}
+.reminder-row label{font-size:13px;cursor:pointer;margin:0}
+
+.toggle-sw{width:44px;height:24px;background:#ddd;border-radius:12px;position:relative;cursor:pointer;transition:.3s}
+.toggle-sw.on{background:var(--accent)}
+.toggle-sw::after{content:''';position:absolute;top:2px;left:2px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-sw.on::after{left:22px}
+
+.history-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.history-item:last-child{border:none}
+.history-item .hi-dates{font-size:13px}
+.history-item .hi-dates .pending{color:var(--gold);font-size:11px}
+
 .tag{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600}
-.tag-solar{background:rgba(92,156,230,.12);color:var(--info)}
-.tag-lunar{background:rgba(244,162,38,.12);color:var(--gold)}
-.tag-today{background:rgba(102,187,106,.15);color:var(--success);animation:pulse 1.5s ease infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-
-.xp-bar{height:10px;background:var(--border);border-radius:5px;overflow:hidden;margin:8px 0}
-.xp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));border-radius:5px;transition:width .4s ease}
-.level-badge{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--accent);font-size:15px}
-.task-item{display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid var(--border);
-  cursor:pointer;transition:.1s;border-radius:8px;margin:1px 0}
-.task-item:active{background:var(--accent-light)}
-.task-item .check{width:22px;height:22px;border:2px solid var(--border);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:.2s}
-.task-item.done .check{background:var(--success);border-color:var(--success);color:#fff}
-.task-item.done .task-name{text-decoration:line-through;color:#b0a0a8}
-.task-item .task-xp{font-size:11px;color:var(--gold);margin-left:auto;font-weight:600;white-space:nowrap}
-.task-item .task-name{font-size:13px}
-.task-item .task-del{font-size:10px;color:#ccc;padding:2px 6px;cursor:pointer;visibility:hidden}
-.task-item:hover .task-del{visibility:visible}
+.tag-today{background:rgba(74,222,128,.15);color:var(--success)}
 
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:200;
   display:flex;align-items:flex-end;justify-content:center;animation:fadeIn .2s}
@@ -136,98 +160,72 @@ label{display:block;margin-bottom:4px;font-size:12px;color:#a09098;font-weight:5
 @keyframes slideUp2{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .modal h3{margin-bottom:12px;font-size:15px}
 
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.stat-card{background:var(--bg);border-radius:12px;padding:10px 6px;text-align:center;border:1px solid var(--border)}
-.stat-card .val{font-size:20px;font-weight:700;color:var(--accent)}
-.stat-card .lbl{font-size:10px;color:#a09098;margin-top:2px}
-.cycle-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:8px 0}
-.cycle-period{background:var(--danger)}
-.cycle-safe{background:var(--success)}
-.cycle-normal{background:var(--border)}
-.prediction{font-size:12px;color:var(--text);line-height:1.8}
-.empty-state{text-align:center;padding:28px 16px;color:#b0a0a8}
-.empty-state .icon{font-size:40px;margin-bottom:6px;display:block}
+.level-up-toast{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:300;
+  background:linear-gradient(135deg,var(--accent),#f080a0);color:#fff;
+  padding:16px 28px;border-radius:16px;font-size:16px;font-weight:800;
+  animation:toastIn .4s ease,toastOut .4s 2s ease forwards;pointer-events:none}
+@keyframes toastIn{from{transform:translate(-50%,-50%) scale(0);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes toastOut{from{transform:translate(-50%,-50%) scale(1);opacity:1}to{transform:translate(-50%,-50%) scale(1.2);opacity:0}}
 
-/* Toast */
-.level-up-toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;
-  padding:10px 24px;border-radius:20px;font-size:13px;font-weight:600;z-index:300;
-  animation:toastIn .3s ease,toastOut .3s ease 2s forwards;pointer-events:none;box-shadow:0 4px 16px rgba(233,30,99,.3)}
-@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-@keyframes toastOut{from{opacity:1}to{opacity:0}}
+.legend{display:flex;flex-wrap:wrap;gap:8px;font-size:10px;color:#c0a0b0;margin-top:8px;justify-content:center}
+.legend span{display:flex;align-items:center;gap:3px}
+.legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.legend .dot.red{background:var(--danger)}
+.legend .dot.pink{background:rgba(233,30,105,.35);border:1px dashed var(--danger)}
+.legend .dot.purple{background:var(--info)}
+.legend .dot.lpurple{background:rgba(168,85,247,.25)}
 
-/* Joy explanation box */
-.joy-explain{background:var(--accent-light);border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:11px;color:var(--accent);line-height:1.6;border-left:3px solid var(--accent)}
-
-/* Birthday scrollable */
-.bday-scroll{max-height:350px;overflow-y:auto}
+.flow-selector{display:flex;gap:6px;margin:8px 0}
+.flow-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--bg);
+  font-size:16px;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center}
+.flow-btn.selected{border-color:var(--danger);background:rgba(233,30,105,.1);transform:scale(1.1)}
 </style>
 </head>
 <body>
 <div class="app">
-<header><h1>🌸 健康生活记录</h1><button onclick="installApp()" style="position:absolute;right:12px;top:12px;background:var(--accent);color:#fff;border:none;padding:5px 12px;border-radius:16px;font-size:11px;cursor:pointer;font-weight:600">📲 安装</button></header>
+<header><h1>🌸 健康生活记录</h1></header>
 
-<!-- ====== 日历面板 ====== -->
 <div class="panel active" id="panel-calendar">
   <div class="card">
     <div class="cal-header">
       <button onclick="calShift(-1)">◀</button>
       <span class="cal-title" id="calTitle" style="cursor:pointer" onclick="calGoToday()" title="点击回到今天"></span>
       <button onclick="calShift(1)">▶</button>
-      <button onclick="calGoToday()" style="font-size:11px;padding:4px 10px">今天</button>
+      <button onclick="calGoToday()" style="font-size:11px;border:1px solid var(--border);padding:4px 10px;border-radius:14px">今天</button>
     </div>
     <div class="cal-grid" id="calDayHeaders"></div>
     <div class="cal-grid" id="calGrid"></div>
     <div class="legend">
       <span><span class="dot red"></span> 经期中</span>
       <span><span class="dot pink"></span> 预测经期</span>
-      <span><span class="dot blue"></span> 排卵日</span>
+      <span><span class="dot purple"></span> 排卵日</span>
+      <span><span class="dot lpurple"></span> 易孕期</span>
       <span>🎂 生日</span>
       <span>💊 不适</span>
-      
+      <span>⭐ 小确幸</span>
     </div>
   </div>
-  <div class="card" id="calInfo"><div style="text-align:center;color:#b0a0a8;font-size:13px">👆 点击日期查看详情 / 记录小确幸 / 记录不适</div></div>
+  <div class="card" id="calInfo"><div style="text-align:center;color:#c0a0b0;font-size:13px">👆 点击日期查看详情 / 记录身体不适 / 写小确幸</div></div>
 </div>
 
-<!-- ====== 生日面板 ====== -->
 <div class="panel" id="panel-birthday">
   <div class="card">
     <h3>🎂 生日提醒</h3>
     <div id="birthdayNext"></div>
     <button class="btn btn-primary btn-block" onclick="showBirthdayForm()" style="margin-top:8px">+ 添加生日</button>
-    <div class="bday-scroll" id="birthdayList" style="margin-top:10px"></div>
+    <div id="birthdayList" style="margin-top:10px"></div>
   </div>
 </div>
 
-<!-- ====== 生理面板 ====== -->
 <div class="panel" id="panel-period">
   <div class="card">
     <h3>🌸 生理期追踪</h3>
-    <div id="periodStats"></div>
-    <div id="periodPrediction"></div>
-    <button class="btn btn-primary btn-block" onclick="showPeriodForm()" style="margin-top:8px">+ 记录本次生理期开始</button>
-    <div id="periodHistory" style="margin-top:10px"></div>
-  </div>
-</div>
-
-<!-- ====== 任务面板 ====== -->
-<div class="panel" id="panel-task">
-  <div class="card">
-    <h3>⚔️ 每日任务榜单</h3>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-      <span class="level-badge" id="lvBadge"></span>
-      <div style="flex:1"><div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div></div>
-      <span style="font-size:10px;color:#b0a0a8" id="xpText"></span>
-    </div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="val" id="statStreak">0</div><div class="lbl">🔥 连续打卡</div></div>
-      <div class="stat-card"><div class="val" id="statTotal">0</div><div class="lbl">✅ 总完成</div></div>
-      <div class="stat-card"><div class="val" id="statDay">0</div><div class="lbl">📋 今日完成</div></div>
-    </div>
-    <div id="taskList"></div>
-    <button class="btn btn-outline btn-block" onclick="resetDailyTasks()" style="margin-top:10px">🔄 重置今日任务</button>
-    <button class="btn btn-outline btn-block" onclick="showAddTaskForm()" style="margin-top:6px">+ 添加自定义任务</button>
-    <button class="btn btn-outline btn-block" onclick="showTaskHistory()" style="margin-top:6px">📋 查看历史任务记录</button>
+    <div class="humane-msg" id="periodHumane"></div>
+    <div class="period-stats" id="periodStats"></div>
+    <div class="prediction-card" id="predictionCard" style="display:none"></div>
+    <div id="periodReminders"></div>
+    <button class="btn btn-primary btn-block" onclick="showPeriodForm()" style="margin-top:8px">+ 记录本次月经</button>
+    <div id="periodHistory" style="margin-top:12px"></div>
   </div>
 </div>
 </div>
@@ -236,34 +234,17 @@ label{display:block;margin-bottom:4px;font-size:12px;color:#a09098;font-weight:5
   <button class="active" data-panel="calendar"><span class="icon">📅</span>日历</button>
   <button data-panel="birthday"><span class="icon">🎂</span>生日</button>
   <button data-panel="period"><span class="icon">🌸</span>生理</button>
-  <button data-panel="task"><span class="icon">⚔️</span>任务</button>
 </nav>
 <div id="modalContainer"></div>
 <div id="toastContainer"></div>
 <script>
-
 // ==================== 农历引擎 ====================
-const LUNAR_INFO=[
-0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,
-0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
-0x06566,0x0d4a0,0x0ea50,0x16a95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,
-0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,
-0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,
-0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
-0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,
-0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
-0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,
-0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,
-0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x092e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,
-0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,
-0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,
-0x04ae0,0x0a9d4,0x0a4d0,0x0d150,0x0f252,0x0d520];
+const LUNAR_INFO=[0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,0x06566,0x0d4a0,0x0ea50,0x16a95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,0x06ca0,0x0b550,0x15355,0x04da0,0x0a5b0,0x14573,0x052b0,0x0a9a8,0x0e950,0x06aa0,0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,0x05aa0,0x076a3,0x096d0,0x04afb,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0,0x14b63,0x09370,0x049f8,0x04970,0x064b0,0x168a6,0x0ea50,0x06b20,0x1a6c4,0x0aae0,0x092e0,0x0d2e3,0x0c960,0x0d557,0x0d4a0,0x0da50,0x05d55,0x056a0,0x0a6d0,0x055d4,0x052d0,0x0a9b8,0x0a950,0x0b4a0,0x0b6a6,0x0ad50,0x055a0,0x0aba4,0x0a5b0,0x052b0,0x0b273,0x06930,0x07337,0x06aa0,0x0ad50,0x14b55,0x04b60,0x0a570,0x054e4,0x0d160,0x0e968,0x0d520,0x0daa0,0x16aa6,0x056d0,0x04ae0,0x0a9d4,0x0a4d0,0x0d150,0x0f252,0x0d520];
 const GAN=["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
 const ZHI=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
 const ANIMALS=["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
 const LDAY=["","初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五","十六","十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"];
 const LMON=["","正月","二月","三月","四月","五月","六月","七月","八月","九月","十月","冬月","腊月"];
-
 function lyDays(y){let s=348,i=0x8000;for(let j=0;j<12;j++){s+=(LUNAR_INFO[y-1900]&i)?1:0;i>>=1}return s+leapDays(y)}
 function leapMonth(y){return LUNAR_INFO[y-1900]&0xf}
 function leapDays(y){if(leapMonth(y))return(LUNAR_INFO[y-1900]&0x10000)?30:29;return 0}
@@ -279,597 +260,616 @@ function solar2lunar(y,m,d){
   }
   if(offset===0&&leap===lm&&isLeap)isLeap=false;
   if(offset<0){offset+=t;lm--}
-  return{lyear:ly,lmonth:lm,lday:offset+1,isLeap,lmonthName:(isLeap?'闰':'')+LMON[lm],ldayName:LDAY[offset+1],yearName:GAN[(ly-4)%10]+ZHI[(ly-4)%12],animal:ANIMALS[(ly-4)%12]};
+  return{lyear:ly,lmonth:lm,lday:offset+1,isLeap,lmonthName:(isLeap?"闰":"")+LMON[lm],ldayName:LDAY[offset+1],yearName:GAN[(ly-4)%10]+ZHI[(ly-4)%12],animal:ANIMALS[(ly-4)%12]};
 }
+const SOLH={"1-1":"元旦","2-14":"情人节","3-8":"妇女节","5-1":"劳动节","6-1":"儿童节","8-1":"建军节","9-10":"教师节","10-1":"国庆节","12-25":"圣诞节"};
+const LUNH={"1-1":"春节","1-15":"元宵节","5-5":"端午节","7-7":"七夕","7-15":"中元节","8-15":"中秋节","9-9":"重阳节"};
+function _dk(m,d){return m+"-"+d}
 
-const SOLH={'1-1':'元旦','2-14':'情人节','3-8':'妇女节','5-1':'劳动节','6-1':'儿童节','8-1':'建军节','9-10':'教师节','10-1':'国庆节','12-25':'圣诞节'};
-const LUNH={'1-1':'春节','1-15':'元宵节','5-5':'端午节','7-7':'七夕','7-15':'中元节','8-15':'中秋节','9-9':'重阳节'};
-function _dk(m,d){return m+'-'+d}
-
-// ==================== 本地存储 ====================
-const DB={
-  get(k,d){try{let v=localStorage.getItem('h_'+k);return v?JSON.parse(v):d}catch(e){return d}},
-  set(k,v){localStorage.setItem('h_'+k,JSON.stringify(v))},
-  bdays(){return this.get('bdays',[])},
-  addBday(b){let bs=this.bdays();bs.push(b);this.set('bdays',bs);renderBdays();renderCal()},
-  delBday(i){let bs=this.bdays();bs.splice(i,1);this.set('bdays',bs);renderBdays();renderCal()},
-  periods(){return this.get('periods',[])},
-  addPeriod(p){let ps=this.periods();ps.push(p);ps.sort((a,b)=>a.start<b.start?-1:1);this.set('periods',ps);renderPeriod();renderCal()},
-  delPeriod(i){let ps=this.periods();ps.splice(i,1);this.set('periods',ps);renderPeriod();renderCal()},
-  diary(){return this.get('diary',{})},
-  saveDiary(d,items){let dd=this.diary();dd[d]=items;this.set('diary',dd)},
-  getDiary(d){return(this.diary()||{})[d]||null},
-  tasks(){return this.get('tasks',{})},
-  saveTasks(d,t){let td=this.tasks();td[d]=t;this.set('tasks',td)},
-  getTasks(d){return(this.tasks()||{})[d]||null},
-  userTasks(){return this.get('userTasks',[])},
-  setUserTasks(ts){this.set('userTasks',ts);renderTasks()},
-  xp(){return this.get('xp',{xp:0,level:1,streak:0,completed:0,th:{}})},
-  saveXp(x){this.set('xp',x)},
-  symptoms(){return this.get('symptoms',{})},
-  saveSymptom(date,text){let s=this.symptoms();s[date]=text;this.set('symptoms',s)},
-  getSymptom(date){return(this.symptoms()||{})[date]||''},
-  delSymptom(date){let s=this.symptoms();delete s[date];this.set('symptoms',s)}
-};
+// ==================== 工具函数 ====================
+function _todayKey(){let t=new Date();return t.getFullYear()+"-"+(t.getMonth()+1)+"-"+t.getDate()}
+function _fmt(d){return d.getFullYear()+"/"+(d.getMonth()+1)+"/"+d.getDate()}
+function _el(id){return document.getElementById(id)}
+function _dateKey(y,m,d){return y+"-"+m+"-"+d}
+function _parseDate(str){let p=str.split("/");if(p.length===3)return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));p=str.split("-");if(p.length===3)return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));return new Date(str)}
+function _dateEq(d1,d2){return d1.getFullYear()===d2.getFullYear()&&d1.getMonth()===d2.getMonth()&&d1.getDate()===d2.getDate()}
+function _addDays(d,n){let r=new Date(d);r.setDate(r.getDate()+n);return r}
+function _daysBetween(d1,d2){return Math.round((d2-d1)/86400000)}
 
 // ==================== Toast ====================
 function showToast(msg){
-  let el=document.createElement('div');el.className='level-up-toast';el.textContent=msg;
-  document.getElementById('toastContainer').appendChild(el);setTimeout(()=>el.remove(),2500);
+  let el=document.createElement("div");el.className="level-up-toast";el.textContent=msg;
+  _el("toastContainer").appendChild(el);setTimeout(function(){el.remove()},2500);
 }
 
-function _todayKey(){let t=new Date();return t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate()}
-function _fmt(d){return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()}
-function _el(id){return document.getElementById(id)}
+// ==================== 数据层 (DB) ====================
+const DB={
+  _k:"h_",
+  get(k,d){try{let v=localStorage.getItem(this._k+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){localStorage.setItem(this._k+k,JSON.stringify(v))},
 
-// ==================== 日历 ====================
-let calYear,calMonth;
-function initCal(){let n=new Date();calYear=n.getFullYear();calMonth=n.getMonth()+1;renderCal()}
-function calShift(d){calMonth+=d;if(calMonth>12){calYear++;calMonth=1}if(calMonth<1){calYear--;calMonth=12};renderCal()}
-function calGoToday(){let n=new Date();calYear=n.getFullYear();calMonth=n.getMonth()+1;renderCal()}
+  _migratePeriods(ps){
+    let changed=false;
+    ps=ps.map(function(p){
+      if(!p.hasOwnProperty("startDate")){
+        changed=true;
+        let sd=_parseDate(p.start||p.startDate);
+        if(isNaN(sd.getTime()))return p;
+        let ed=new Date(sd);ed.setDate(ed.getDate()+(p.duration||5)-1);
+        return{id:Date.now()+Math.random(),startDate:_fmt(sd),endDate:_fmt(ed),flowLevel:null,cramps:null,symptoms:[],mood:"",notes:"",_migrated:true};
+      }
+      if(!p.id){changed=true;p.id=Date.now()+Math.random()}
+      if(typeof p.symptoms==="string"){changed=true;p.symptoms=p.symptoms?[p.symptoms]:[]}
+      return p;
+    });
+    return ps;
+  },
+  periods(){let ps=this.get("periods",[]);let migrated=this._migratePeriods(ps);if(migrated!==ps)this.set("periods",migrated);return migrated},
+  addPeriod(p){let ps=this.periods();p.id=p.id||Date.now()+Math.random();ps.push(p);ps.sort(function(a,b){return a.startDate<b.startDate?-1:1});this.set("periods",ps);renderPeriod();renderCal()},
+  updatePeriod(id,updates){let ps=this.periods();let idx=ps.findIndex(function(p){return p.id===id});if(idx>=0){Object.assign(ps[idx],updates);this.set("periods",ps);renderPeriod();renderCal()}},
+  delPeriod(id){let ps=this.periods().filter(function(p){return p.id!==id});this.set("periods",ps);renderPeriod();renderCal()},
+  getPeriodById(id){return this.periods().find(function(p){return p.id===id})},
+
+  bdays(){return this.get("bdays",[])},
+  addBday(b){let bs=this.bdays();bs.push(b);this.set("bdays",bs);renderBdays();renderCal()},
+  updateBday(i,b){let bs=this.bdays();bs[i]=b;this.set("bdays",bs);renderBdays();renderCal()},
+  delBday(i){let bs=this.bdays();bs.splice(i,1);this.set("bdays",bs);renderBdays();renderCal()},
+
+  diary(){return this.get("diary",{})},
+  saveDiary(d,items){let dd=this.diary();dd[d]=items;this.set("diary",dd)},
+  getDiary(d){return(this.diary()||{})[d]||null},
+
+  symptoms(){return this.get("symptoms",{})},
+  saveSymptom(date,text){let s=this.symptoms();s[date]=text;this.set("symptoms",s)},
+  getSymptom(date){return(this.symptoms()||{})[date]||""},
+  delSymptom(date){let s=this.symptoms();delete s[date];this.set("symptoms",s)},
+
+  periodReminders(){return this.get("periodReminders",{beforePeriod:true,ovulation:false,longGap:true})},
+  setPeriodReminders(r){this.set("periodReminders",r)}
+};
+
+// ==================== 经期预测引擎 ====================
+function calculatePrediction(periods){
+  if(!periods||periods.length===0)return{confidence:"none",message:"还没有记录过月经，添加记录后可以预测哦 💕"};
+  var valid=periods.filter(function(p){return p.startDate});
+  valid.sort(function(a,b){return a.startDate<b.startDate?-1:1});
+  if(valid.length>6)valid=valid.slice(-6);
+
+  var cycles=[];
+  for(var i=1;i<valid.length;i++){
+    var d1=_parseDate(valid[i-1].startDate),d2=_parseDate(valid[i].startDate);
+    if(isNaN(d1.getTime())||isNaN(d2.getTime()))continue;
+    var gap=_daysBetween(d1,d2);
+    if(gap>=21&&gap<=45)cycles.push(gap);
+  }
+
+  var pLens=[];
+  valid.forEach(function(p){
+    if(p.endDate){
+      var sd=_parseDate(p.startDate),ed=_parseDate(p.endDate);
+      if(!isNaN(sd.getTime())&&!isNaN(ed.getTime())){
+        var len=_daysBetween(sd,ed)+1;
+        if(len>=1&&len<=14)pLens.push(len);
+      }
+    }
+  });
+
+  function median(arr){arr.sort(function(a,b){return a-b});var m=Math.floor(arr.length/2);return arr.length%2?arr[m]:Math.round((arr[m-1]+arr[m])/2)}
+
+  var avgCycle=cycles.length>0?median(cycles):28;
+  var avgPeriod=pLens.length>0?median(pLens):5;
+  var confidence=cycles.length>=6?"high":(cycles.length>=2?"medium":"low");
+
+  var lastStart=_parseDate(valid[valid.length-1].startDate);
+  var nextStart=_addDays(lastStart,avgCycle);
+  var nextEnd=_addDays(nextStart,avgPeriod-1);
+  var ovDay=_addDays(nextStart,-14);
+  var fertileStart=_addDays(ovDay,-5);
+  var fertileEnd=_addDays(ovDay,1);
+
+  var today=new Date();today.setHours(0,0,0,0);
+  var daysUntil=Math.round((nextStart-today)/86400000);
+  var inPeriod=false,periodDay=0;
+  valid.forEach(function(p){
+    var sd=_parseDate(p.startDate),ed=p.endDate?_parseDate(p.endDate):sd;
+    if(!isNaN(sd.getTime())&&!isNaN(ed.getTime())&&sd<=today&&today<=ed){
+      inPeriod=true;periodDay=_daysBetween(sd,today)+1;
+    }
+  });
+
+  var message="";
+  if(inPeriod){message="今天是经期第 "+periodDay+" 天，注意休息 💕"}
+  else if(daysUntil===0){message="预计今天来月经，做好准备哦 🌸"}
+  else if(daysUntil>0&&daysUntil<=7){message="预计还有 "+daysUntil+" 天来月经"}
+  else{message="预计 "+_fmt(nextStart)+" 来月经"}
+  if(confidence==="low")message+="\n（数据较少，预测仅供参考）";
+
+  return{
+    cycleLen:avgCycle,periodLen:avgPeriod,
+    nextStart:_fmt(nextStart),nextEnd:_fmt(nextEnd),
+    ovDay:_fmt(ovDay),fertileStart:_fmt(fertileStart),fertileEnd:_fmt(fertileEnd),
+    confidence:confidence,message:message,
+    inPeriod:inPeriod,periodDay:periodDay,daysUntil:daysUntil
+  };
+}
+
+// ==================== 日历渲染 ====================
+var calYear,calMonth;
+function initCal(){var n=new Date();calYear=n.getFullYear();calMonth=n.getMonth()+1;renderCal()}
+function calShift(d){calMonth+=d;if(calMonth>12){calYear++;calMonth=1}if(calMonth<1){calYear--;calMonth=12}renderCal()}
+function calGoToday(){var n=new Date();calYear=n.getFullYear();calMonth=n.getMonth()+1;renderCal()}
 
 function renderCal(){
-  let now=new Date();now.setHours(0,0,0,0);
-  let todayKey=_dk(now.getMonth()+1,now.getDate());
-  let isCurrentMonth=(calYear===now.getFullYear()&&calMonth===now.getMonth()+1);
+  var y=calYear,m=calMonth,today=new Date();
+  var todayKey=_dateKey(today.getFullYear(),today.getMonth()+1,today.getDate());
+  _el("calTitle").textContent=y+"年 "+m+"月";
 
-  _el('calDayHeaders').innerHTML='日一二三四五六'.split('').map((d,i)=>`<div class="cal-day-header${i===0||i===6?' weekend':''}">${d}</div>`).join('');
-  _el('calTitle').textContent=`${calYear}年 ${calMonth}月`;
+  var headers=["日","一","二","三","四","五","六"];
+  _el("calDayHeaders").innerHTML=headers.map(function(h,i){return '<div class="cal-day-header'+(i===0||i===6?' weekend':'')+'">'+h+'</div>'}).join("");
 
-  let firstDay=new Date(calYear,calMonth-1,1).getDay();
-  let totalDays=new Date(calYear,calMonth,0).getDate();
+  var periods=DB.periods();
+  var pred=calculatePrediction(periods);
 
-  let bdays=DB.bdays(),periods=DB.periods(),symptoms=DB.symptoms();
-
-  // Solar birthdays {month-day: [names]}
-  let bdSet={};
-  bdays.forEach(b=>{if(b.type==='solar'){let k=_dk(b.month,b.day);if(!bdSet[k])bdSet[k]=[];bdSet[k].push(b.name)}});
-
-  // Lunar birthdays in current calendar year
-  let bdLunar={};
-  bdays.forEach(b=>{if(b.type==='lunar'){
-    for(let d=1;d<=totalDays;d++){try{let lu=solar2lunar(calYear,calMonth,d);if(lu.lmonth===b.month&&lu.lday===b.day&&!lu.isLeap){let k=_dk(calMonth,d);if(!bdLunar[k])bdLunar[k]=[];bdLunar[k].push(b.name)}}catch(e){}}
-  }});
-
-  // Recorded periods (actual, not predicted)
-  let periodSet={};
-  periods.forEach(p=>{
-    let sd=new Date(p.start),ed=new Date(p.start);ed.setDate(ed.getDate()+p.duration-1);
-    for(let d=new Date(sd);d<=ed;d.setDate(d.getDate()+1))periodSet[_dk(d.getMonth()+1,d.getDate())]=true;
+  // 真实经期日期集
+  var actualPeriodSet={};
+  periods.forEach(function(p){
+    var sd=_parseDate(p.startDate);
+    if(isNaN(sd.getTime()))return;
+    var ed=p.endDate?_parseDate(p.endDate):sd;
+    if(isNaN(ed.getTime())){actualPeriodSet[_dateKey(sd.getFullYear(),sd.getMonth()+1,sd.getDate())]=true;return}
+    for(var d=new Date(sd);d<=ed;d.setDate(d.getDate()+1)){
+      actualPeriodSet[_dateKey(d.getFullYear(),d.getMonth()+1,d.getDate())]=true;
+    }
   });
 
-  // Check if TODAY is in a recorded period (经期中)
-  let todayFullKey=_todayKey();
-  let todayInPeriod=false;
-  periods.forEach(p=>{
-    let sd=new Date(p.start),ed=new Date(p.start);ed.setDate(ed.getDate()+p.duration-1);
-    let td=new Date(now);
-    if(td>=sd&&td<=ed)todayInPeriod=true;
-  });
-
-  // Predicted future periods (only if today is NOT in a recorded period, predict FROM last period)
-  // If today IS in a period, don't predict the current one, predict the NEXT ones
-  let predPeriodSet={},ovulationSet={};
-  if(periods.length>=1){
-    let cycleLen=28,periodLen=5;
-    if(periods.length>=2){
-      let diffs=[];for(let i=1;i<periods.length;i++)diffs.push(Math.round((new Date(periods[i].start)-new Date(periods[i-1].start))/86400000));
-      if(diffs.length>0)cycleLen=Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length);
-      periodLen=Math.round(periods.reduce((a,b)=>a+b.duration,0)/periods.length);
-    }
-    let last=periods[periods.length-1];
-    // If today is in a period, start predicting from NEXT cycle
-    // If today is past the last period, predict from the cycle that starts after today
-    let startFrom=1;
-    let lastStart=new Date(last.start);
-    let nextPredStart=new Date(lastStart);nextPredStart.setDate(nextPredStart.getDate()+cycleLen);
-    // If today is already past the first prediction, skip to the one that's still in the future
-    while(nextPredStart<=now&&startFrom<6){
-      startFrom++;
-      nextPredStart=new Date(lastStart);nextPredStart.setDate(nextPredStart.getDate()+cycleLen*startFrom);
-    }
-    // Predict 3 future cycles
-    for(let cyc=startFrom;cyc<startFrom+3;cyc++){
-      let predStart=new Date(lastStart);predStart.setDate(predStart.getDate()+cycleLen*cyc);
-      let predEnd=new Date(predStart);predEnd.setDate(predEnd.getDate()+periodLen-1);
-      for(let d=new Date(predStart);d<=predEnd;d.setDate(d.getDate()+1)){
-        if(d.getFullYear()===calYear&&d.getMonth()+1===calMonth)predPeriodSet[_dk(d.getMonth()+1,d.getDate())]=true;
-      }
-      // Ovulation window (5 days)
-      let ovDay=new Date(predStart);ovDay.setDate(ovDay.getDate()-14);
-      for(let o=-2;o<=2;o++){
-        let fd=new Date(ovDay);fd.setDate(fd.getDate()+o);
-        if(fd.getFullYear()===calYear&&fd.getMonth()+1===calMonth)ovulationSet[_dk(fd.getMonth()+1,fd.getDate())]=true;
+  // 预测经期日期集（排除已真实记录的）
+  var predPeriodSet={};
+  if(pred.nextStart){
+    var ns=_parseDate(pred.nextStart),ne=_parseDate(pred.nextEnd);
+    if(!isNaN(ns.getTime())&&!isNaN(ne.getTime())){
+      for(var d=new Date(ns);d<=ne;d.setDate(d.getDate()+1)){
+        var dk=_dateKey(d.getFullYear(),d.getMonth()+1,d.getDate());
+        if(!actualPeriodSet[dk])predPeriodSet[dk]=true;
       }
     }
   }
 
-  // Symptom marks (convert full date key to month-day key)
-  let symSet={};Object.keys(symptoms).forEach(k=>{let parts=k.split('-');if(parts.length===3)symSet[_dk(parseInt(parts[1]),parseInt(parts[2]))]=true;});
-
-  let diary=DB.diary();
-
-
-  // Render calendar grid
-  let html='';
-  for(let i=0;i<firstDay;i++)html+=`<div class="cal-day empty"></div>`;
-  for(let d=1;d<=totalDays;d++){
-    let ck=_dk(calMonth,d);let lu=solar2lunar(calYear,calMonth,d);
-    let cls=[],marks=[];
-    let wd=new Date(calYear,calMonth-1,d).getDay();
-    if(wd===0||wd===6)cls.push('weekend');
-
-    // Today highlight
-    if(isCurrentMonth&&ck===todayKey)cls.push('today');
-
-    // Holidays
-    let sh=SOLH[ck];let lh=LUNH[_dk(lu.lmonth,lu.lday)];
-    if(lu.lmonth===12&&lu.lday===29&&monthDays(lu.lyear,12)===29)lh='除夕';
-    if(sh||lh)cls.push('holiday');
-
-    // Period classes: only show "period" (actual) for dates that ARE in recorded range
-    if(periodSet[ck])cls.push('period');
-    if(predPeriodSet[ck])cls.push('period-pred');
-    if(ovulationSet[ck])cls.push('ovulation');
-
-    // Lunar display text
-    let ltext=lu.ldayName;if(lu.lday===1)ltext=lu.lmonthName;
-    if(sh)ltext=sh;else if(lh)ltext=lh;
-
-    // Bottom marks
-    if(periodSet[ck])marks.push('<span class="cal-mark per">🔴</span>');
-    if(predPeriodSet[ck])marks.push('<span class="cal-mark per">🩸</span>');
-    if(ovulationSet[ck])marks.push('<span class="cal-mark ovu">🥚</span>');
-    // Birthday
-    let bdNames=(bdSet[ck]||[]).concat(bdLunar[ck]||[]);
-    if(bdNames.length>0){cls.push('birthday');marks.push('<span class="cal-mark bd">🎂</span>');}
-    // Symptom
-    if(symSet[ck])marks.push('<span class="cal-mark sym">💊</span>');
-
-
-    let marksHtml=marks.length>0?`<div class="cal-marks">${marks.join('')}</div>`:'';
-    html+=`<div class="cal-day ${cls.join(' ')}" onclick="calClick(${calYear},${calMonth},${d})">
-      <span class="solar-date">${d}</span><span class="lunar">${ltext}</span>${marksHtml}</div>`;
+  // 排卵日 & 易孕期
+  var ovSet={},fertileSet={};
+  if(pred.ovDay){
+    var ov=_parseDate(pred.ovDay);
+    if(!isNaN(ov.getTime())){var odk=_dateKey(ov.getFullYear(),ov.getMonth()+1,ov.getDate());if(!actualPeriodSet[odk])ovSet[odk]=true}
   }
-  _el('calGrid').innerHTML=html;
+  if(pred.fertileStart&&pred.fertileEnd){
+    var fs=_parseDate(pred.fertileStart),fe=_parseDate(pred.fertileEnd);
+    if(!isNaN(fs.getTime())&&!isNaN(fe.getTime())){
+      for(var d=new Date(fs);d<=fe;d.setDate(d.getDate()+1)){
+        var dk=_dateKey(d.getFullYear(),d.getMonth()+1,d.getDate());
+        if(!actualPeriodSet[dk]&&!ovSet[dk])fertileSet[dk]=true;
+      }
+    }
+  }
+
+  var symptoms=DB.symptoms();
+  var diary=DB.diary();
+  var bdays=DB.bdays();
+  var bdaySet={};
+  bdays.forEach(function(b){bdaySet[parseInt(b.month)+"-"+parseInt(b.day)]=b.name});
+
+  var hols={};for(var k in SOLH)hols[k]=SOLH[k];for(var k in LUNH)hols[k]=LUNH[k];
+
+  var firstDay=new Date(y,m-1,1).getDay();
+  var daysInMonth=new Date(y,m,0).getDate();
+  var grid="";
+  for(var i=0;i<firstDay;i++)grid+='<div class="cal-day empty"></div>';
+  for(var d=1;d<=daysInMonth;d++){
+    var ck=_dateKey(y,m,d);
+    var cls=["cal-day"],marks=[];
+    var isToday=(ck===todayKey);
+
+    if(actualPeriodSet[ck]){cls.push("period-actual");marks.push("🔴")}
+    else if(predPeriodSet[ck]){cls.push("period-pred");marks.push("🩸")}
+    if(ovSet[ck]){cls.push("ovulation");marks.push("🥚")}
+    else if(fertileSet[ck]){cls.push("fertile");marks.push("💜")}
+    if(isToday)cls.push("today");
+    var bdKey=m+"-"+d;
+    if(bdaySet[bdKey]){cls.push("birthday-day");marks.push("🎂")}
+    if(symptoms[ck])marks.push("💊");
+    if(diary[ck]&&diary[ck].length>0)marks.push("⭐");
+    var hk=_dk(m,d);
+    if(hols[hk])cls.push("holiday");
+
+    var lun=solar2lunar(y,m,d);
+    var lunarText=lun.ldayName;
+    if(lun.lday===1)lunarText=lun.lmonthName;
+    if(LUNH[_dk(lun.lmonth,lun.lday)])lunarText=LUNH[_dk(lun.lmonth,lun.lday)]||lunarText;
+
+    grid+='<div class="'+cls.join(" ")+'" onclick="calClick('+y+','+m+','+d+')">';
+    grid+='<span class="solar-date">'+d+'</span>';
+    grid+='<span class="lunar">'+lunarText+'</span>';
+    if(marks.length>0)grid+='<div class="cal-marks">'+marks.map(function(m){return'<span>'+m+'</span>'}).join("")+'</div>';
+    grid+='</div>';
+  }
+  _el("calGrid").innerHTML=grid;
+  _el("calTitle").textContent=y+"年 "+m+"月";
 }
 
-// ==================== 日历点击：详情 + 小确幸 + 不适 ====================
+// ==================== 日历点击详情 ====================
 function calClick(y,m,d){
-  let ck=y+'-'+m+'-'+d;let lu=solar2lunar(y,m,d);let smk=_dk(m,d);
-  let sh=SOLH[smk],lh=LUNH[_dk(lu.lmonth,lu.lday)];
+  var dateKey=_dateKey(y,m,d);
+  var lun=solar2lunar(y,m,d);
+  var today=new Date();today.setHours(0,0,0,0);
+  var clickDate=new Date(y,m-1,d);
+  var isToday=_dateEq(today,clickDate);
+  var periods=DB.periods();
+  var pred=calculatePrediction(periods);
 
-  // Check if period day
-  let isPeriod=false;let periods=DB.periods();
-  periods.forEach(p=>{
-    let sd=new Date(p.start),ed=new Date(p.start);ed.setDate(ed.getDate()+p.duration-1);
-    if(new Date(y,m-1,d)>=sd&&new Date(y,m-1,d)<=ed)isPeriod=true;
+  // 查找真实经期记录
+  var actualPeriod=null;
+  periods.forEach(function(p){
+    var sd=_parseDate(p.startDate);
+    if(isNaN(sd.getTime()))return;
+    var ed=p.endDate?_parseDate(p.endDate):sd;
+    if(isNaN(ed.getTime()))ed=sd;
+    if(sd<=clickDate&&clickDate<=ed)actualPeriod=p;
   });
 
-  // Check birthdays
-  let bdNames=[],bdays=DB.bdays();
-  bdays.forEach(b=>{
-    if(b.type==='solar'&&b.month===m&&b.day===d)bdNames.push(b.name);
-    if(b.type==='lunar'&&lu.lmonth===b.month&&lu.lday===b.day&&!lu.isLeap)bdNames.push(b.name);
-  });
+  // 预测状态
+  var predPeriod=false,ovDay=false,fertileDay=false;
+  if(!actualPeriod&&pred.nextStart){
+    var ns=_parseDate(pred.nextStart),ne=_parseDate(pred.nextEnd);
+    if(!isNaN(ns.getTime())&&!isNaN(ne.getTime())&&ns<=clickDate&&clickDate<=ne)predPeriod=true;
+  }
+  if(pred.ovDay){var ov=_parseDate(pred.ovDay);if(!isNaN(ov.getTime())&&_dateEq(ov,clickDate))ovDay=true}
+  if(!ovDay&&pred.fertileStart&&pred.fertileEnd){
+    var fs=_parseDate(pred.fertileStart),fe=_parseDate(pred.fertileEnd);
+    if(!isNaN(fs.getTime())&&!isNaN(fe.getTime())&&fs<=clickDate&&clickDate<=fe)fertileDay=true;
+  }
 
-  // Symptoms
-  let savedSym=DB.getSymptom(ck);
+  var html='<div class="detail-card">';
+  html+='<div class="detail-date">'+y+'年'+m+'月'+d+'日 '+(isToday?'<span class="tag tag-today">今天</span> ':'');
+  html+='<span style="font-size:12px;color:#b090a0">'+lun.lmonthName+lun.ldayName+'</span></div>';
+
+  if(actualPeriod){
+    var sd=_parseDate(actualPeriod.startDate);
+    var pDay=_daysBetween(sd,clickDate)+1;
+    html+='<span class="detail-badge period">经期第'+pDay+'天</span> ';
+    if(actualPeriod.flowLevel)html+=' 经量: '+'🩸'.repeat(actualPeriod.flowLevel);
+    if(actualPeriod.cramps)html+=' 痛经: '+'😣'.repeat(actualPeriod.cramps);
+  }else if(predPeriod){html+='<span class="detail-badge pred">🩸 预测经期（仅供参考）</span> '}
+  if(ovDay)html+='<span class="detail-badge ovu">🥚 预测排卵日</span> ';
+  if(fertileDay)html+='<span class="detail-badge fert">💜 易孕期（仅供参考）</span> ';
+
+  // 症状
+  var sym=DB.getSymptom(dateKey);
+  if(sym)html+='<div class="detail-section"><h4>💊 身体不适</h4><p style="font-size:13px">'+sym+'</p><button class="btn btn-danger btn-sm" onclick="delSymptom(\''+dateKey+'\')">删除不适记录</button></div>';
 
   // 小确幸
-  let diary=DB.getDiary(ck);
-  let isToday=(ck===_todayKey());
-
-  let info=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:28px">📅</span><strong style="font-size:16px">${y}年${m}月${d}日</strong></div>`;
-  info+=`<p style="color:var(--accent);font-size:13px;margin-bottom:6px">农历: ${lu.yearName}年 ${lu.lmonthName}${lu.ldayName} [${lu.animal}年]</p>`;
-  if(sh)info+=`<p style="color:var(--info);font-size:13px">🎉 ${sh}</p>`;
-  if(lh)info+=`<p style="color:var(--danger);font-size:13px">🏮 ${lh}</p>`;
-  if(isPeriod)info+=`<p style="color:var(--danger);font-size:13px">🔴 生理期中</p>`;
-  if(bdNames.length>0)info+=`<p style="color:var(--gold);font-size:13px">🎂 生日: ${bdNames.join(', ')}</p>`;
-
-  // === 小确幸模块 ===
-  info+=`<div style="margin-top:12px;padding:12px;background:var(--accent-light);border-radius:10px;border-left:3px solid var(--accent)">
-    <strong style="font-size:13px;color:var(--accent)">⭐ 小确幸</strong>
-    <div class="joy-explain">💡 每天记录三件开心的小事，是一种简单而有效的积极心理练习。研究表明，持续记录生活中的美好瞬间有助于提高幸福感、培养乐观心态、减轻焦虑。</div>`;
-
-  if(diary){
-    info+=`<div style="font-size:13px;color:var(--text);line-height:1.8;margin:8px 0;padding:8px;background:var(--card);border-radius:8px">${diary.map((t,i)=>`<div>${i+1}. ${t}</div>`).join('')}</div>`;
-    info+=`<button class="btn btn-outline btn-sm" onclick="editDiaryFor('${ck}')">✏️ 修改</button>`;
+  var joys=DB.getDiary(dateKey)||[];
+  html+='<div class="detail-section"><h4>⭐ 小确幸</h4>';
+  if(joys.length>0){
+    html+='<div class="joy-list">';
+    joys.forEach(function(j,idx){if(j)html+='<div class="joy-item">'+(idx+1)+'. '+j+'</div>'});
+    html+='</div>';
+    html+='<button class="btn btn-outline btn-sm" style="margin-top:6px" onclick="editDiaryFor(\''+dateKey+'\')">✏️ 修改小确幸</button>';
   }else{
-    info+=`<div style="margin-top:8px">
-      <div class="form-group"><input id="joy1" placeholder="🥇 第一件开心的事..."></div>
-      <div class="form-group"><input id="joy2" placeholder="🥈 第二件开心的事..."></div>
-      <div class="form-group"><input id="joy3" placeholder="🥉 第三件开心的事..."></div>
-      <button class="btn btn-primary btn-block btn-sm" onclick="saveJoy('${ck}')">💾 记录小确幸 (+10 XP)</button></div>`;
+    html+='<p style="font-size:12px;color:#c0a0b0">今天还没记录小确幸</p>';
   }
-  info+=`</div>`;
+  html+='<button class="btn btn-outline btn-sm" style="margin-top:4px" onclick="editDiaryFor(\''+dateKey+'\')">+ 添加小确幸</button>';
+  html+='</div>';
 
-  // === 不适记录 ===
-  info+=`<div style="margin-top:10px;padding:10px;background:var(--bg);border-radius:8px">
-    <strong style="font-size:12px">💊 身体不适记录</strong>`;
-  if(savedSym){
-    info+=`<div style="font-size:12px;color:var(--danger);margin:6px 0;padding:6px;background:rgba(233,48,105,.08);border-radius:6px">${savedSym}</div>
-      <button class="btn btn-danger btn-sm" onclick="delSymptom('${ck}')">删除记录</button>`;
+  // 备注
+  if(actualPeriod&&actualPeriod.notes)html+='<div class="detail-section"><h4>📝 备注</h4><p style="font-size:13px">'+actualPeriod.notes+'</p></div>';
+
+  // 快速操作
+  html+='<div class="detail-section"><h4>快速操作</h4><div class="detail-actions">';
+  if(!actualPeriod){
+    html+='<button class="btn btn-primary btn-sm" onclick="quickRecordPeriod(\''+dateKey+'\')">🩸 月经来了</button>';
+  }else if(!actualPeriod.endDate){
+    html+='<button class="btn btn-success btn-sm" onclick="quickEndPeriod(\''+actualPeriod.id+'\')">✅ 经期结束</button>';
+    html+='<button class="btn btn-outline btn-sm" onclick="showEditPeriodForm(\''+actualPeriod.id+'\')">✏️ 修改</button>';
   }else{
-    info+=`<div style="font-size:11px;color:#b0a0a8;margin:6px 0">暂无记录</div>`;
+    html+='<button class="btn btn-outline btn-sm" onclick="showEditPeriodForm(\''+actualPeriod.id+'\')">✏️ 修改记录</button>';
   }
-  info+=`<textarea id="symInput" placeholder="记录身体不适: 如头痛、腹痛、乏力..." style="margin-top:6px;font-size:12px">${savedSym||''}</textarea>
-    <button class="btn btn-primary btn-block btn-sm" style="margin-top:6px" onclick="saveSymptom('${ck}')">💾 保存不适记录</button></div>`;
-
-  _el('calInfo').innerHTML=info;
+  html+='<button class="btn btn-outline btn-sm" onclick="showSymptomForm(\''+dateKey+'\')">💊 记录不适</button>';
+  html+='</div></div></div>';
+  _el("calInfo").innerHTML=html;
 }
 
-function saveJoy(dateKey){
-  let items=[_el('joy1').value.trim(),_el('joy2').value.trim(),_el('joy3').value.trim()].filter(t=>t);
-  if(items.length===0){showToast('请至少写一件开心的事哦~');return}
+function quickRecordPeriod(dateKey){
+  DB.addPeriod({startDate:dateKey.replace(/-/g,"/"),endDate:null,flowLevel:null,cramps:null,symptoms:[],mood:"",notes:""});
+  var parts=dateKey.split("-");
+  calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
+  showToast("已记录月经开始 🌸");
+}
+
+function quickEndPeriod(id){
+  var today=new Date();today.setHours(0,0,0,0);
+  DB.updatePeriod(id,{endDate:_fmt(today)});
+  showToast("已记录经期结束 ✅");
+}
+
+// ==================== 小确幸编辑 ====================
+function editDiaryFor(dateKey){
+  var joys=DB.getDiary(dateKey)||["","",""];
+  var html='<div class="joy-edit-area" id="joyEdit">';
+  html+='<p style="font-size:11px;color:#c0a0b0;margin-bottom:8px">💡 每天记录三件开心的小事，是一种简单有效的积极心理练习，有助于提升幸福感，培养乐观心态。</p>';
+  for(var i=0;i<3;i++)html+='<textarea id="joy'+i+'" placeholder="第'+(i+1)+'件开心的事..." style="margin-bottom:6px">'+(joys[i]||"")+'</textarea>';
+  html+='<div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="saveEditedJoy(\''+dateKey+'\')">💾 保存</button><button class="btn btn-outline btn-sm" onclick="cancelEditJoy(\''+dateKey+'\')">取消</button></div></div>';
+  var existing=_el("calInfo").querySelector(".joy-edit-area");
+  if(existing)existing.outerHTML=html;
+  else{var info=_el("calInfo");info.insertAdjacentHTML("beforeend",html)}
+}
+
+function cancelEditJoy(dateKey){
+  var parts=dateKey.split("-");
+  calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
+}
+
+function saveEditedJoy(dateKey){
+  var items=[_el("joy0").value.trim(),_el("joy1").value.trim(),_el("joy2").value.trim()].filter(Boolean);
   DB.saveDiary(dateKey,items);
   renderCal();
-  let parts=dateKey.split('-');if(parts.length===3)calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
-  addXP(10);showToast('⭐ +10 XP');
-}
-function editDiaryFor(dateKey){
-  let diary=DB.getDiary(dateKey)||['','',''];
-  _el('calInfo').innerHTML+=`<div class="modal-overlay" style="position:relative;background:rgba(0,0,0,.3);margin-top:8px;border-radius:10px" onclick="event.stopPropagation()"><div style="padding:12px;background:var(--card);border-radius:10px">
-    <strong style="font-size:13px">✏️ 修改小确幸</strong>
-    <div class="form-group" style="margin-top:6px"><input id="ejoy1" value="${(diary[0]||'').replace(/"/g,'&quot;')}" placeholder="第一件事..."></div>
-    <div class="form-group"><input id="ejoy2" value="${(diary[1]||'').replace(/"/g,'&quot;')}" placeholder="第二件事..."></div>
-    <div class="form-group"><input id="ejoy3" value="${(diary[2]||'').replace(/"/g,'&quot;')}" placeholder="第三件事..."></div>
-    <div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" style="flex:1" onclick="saveEditedJoy('${dateKey}')">💾 保存</button><button class="btn btn-outline btn-sm" style="flex:1" onclick="let p=document.querySelector('#calInfo .modal-overlay');if(p)p.remove()">取消</button></div>
-  </div></div>`;
-}
-function saveEditedJoy(dateKey){
-  let items=[_el('ejoy1').value.trim(),_el('ejoy2').value.trim(),_el('ejoy3').value.trim()].filter(t=>t);
-  if(items.length===0){DB.saveDiary(dateKey,[])}else{DB.saveDiary(dateKey,items)}
-  renderCal();
-  let parts=dateKey.split('-');if(parts.length===3)calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
-  showToast('⭐ 已更新');
+  var parts=dateKey.split("-");
+  calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
+  showToast("小确幸已保存 ⭐");
 }
 
-function saveSymptom(dateKey){
-  let text=_el('symInput').value.trim();
-  if(text)DB.saveSymptom(dateKey,text);else DB.delSymptom(dateKey);
-  renderCal();
-  let parts=dateKey.split('-');if(parts.length===3)calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
-  showToast('💊 不适记录已保存');
+// ==================== 症状记录 ====================
+function showSymptomForm(dateKey){
+  var cur=DB.getSymptom(dateKey)||"";
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>💊 记录身体不适</h3><p style="font-size:12px;color:#c0a0b0;margin-bottom:8px">日期: '+dateKey+'</p><textarea id="symptomInput" placeholder="描述哪里不舒服...">'+cur+'</textarea><div style="display:flex;gap:6px;margin-top:10px"><button class="btn btn-primary" onclick="saveSymptomModal(\''+dateKey+'\')">保存</button><button class="btn btn-outline" onclick="closeModal()">取消</button></div></div></div>';
 }
-function delSymptom(dateKey){DB.delSymptom(dateKey);renderCal();showToast('已删除不适记录');}
 
+function saveSymptomModal(dateKey){
+  var text=_el("symptomInput").value.trim();
+  if(text){DB.saveSymptom(dateKey,text);showToast("已记录不适 💊")}
+  else{DB.delSymptom(dateKey)}
+  closeModal();
+  renderCal();
+  var parts=dateKey.split("-");
+  calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
+}
+
+function delSymptom(dateKey){
+  DB.delSymptom(dateKey);renderCal();
+  var parts=dateKey.split("-");
+  if(parts.length===3)calClick(parseInt(parts[0]),parseInt(parts[1]),parseInt(parts[2]));
+  showToast("已删除不适记录");
+}
 
 // ==================== 生日 ====================
 function renderBdays(){
-  let bs=DB.bdays(),now=new Date();now.setHours(0,0,0,0);
-  let upcoming=[];
-  bs.forEach((b,i)=>{
-    let ni=calcNextBday(b,now);upcoming.push({...b,index:i,...ni});
+  var bdays=DB.bdays(),now=new Date();
+  var listHtml="";
+  bdays.forEach(function(b,i){
+    var ni=calcNextBday(b,now);
+    listHtml+='<div class="item-row"><div><strong>'+b.name+'</strong> <span class="tag '+(b.type==="solar"?"tag-solar":"tag-lunar")+'">'+(b.type==="solar"?"国历":"农历")+'</span><br><span style="font-size:11px;color:#b090a0">'+b.month+'月'+b.day+'日';
+    if(ni.daysLeft===0)listHtml+=' <span class="tag tag-today">今天!</span>';
+    else if(ni.daysLeft<=30)listHtml+=' 还有 '+ni.daysLeft+' 天';
+    listHtml+='</span></div><div class="item-actions"><button class="btn btn-outline btn-sm" onclick="editBdayForm('+i+')">✏️</button><button class="btn btn-danger btn-sm" onclick="DB.delBday('+i+')">🗑</button></div></div>';
   });
-  upcoming.sort((a,b)=>a.daysLeft-b.daysLeft);
-  let near=upcoming.filter(u=>u.daysLeft<=30);
-  let upHtml='';
-  if(near.length>0){
-    upHtml='<div style="font-size:12px;margin-bottom:6px;color:var(--accent)">📋 近期生日 ('+near.length+'人):</div>';
-    near.forEach(b=>{upHtml+=`<div style="padding:8px;background:var(--bg);border-radius:8px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
-      <span>🎂 <strong>${b.name}</strong> <span class="tag ${b.type==='solar'?'tag-solar':'tag-lunar'}">${b.type==='solar'?'公历':'农历'}</span></span>
-      <span style="font-size:11px">${b.daysLeft===0?'<span class="tag tag-today">🎉 今天!</span>':'还剩'+b.daysLeft+'天'} ${b.nextDateStr||''}</span></div>`});
-  }
-  _el('birthdayNext').innerHTML=upHtml||'<div style="color:#b0a0a8;font-size:12px">近30天没有生日提醒</div>';
+  _el("birthdayList").innerHTML=listHtml||'<div class="empty-state"><div class="icon">🎂</div>还没有添加生日提醒</div>';
 
-  let listHtml=upcoming.map(b=>`
-    <div class="item-row"><div style="min-width:0"><strong style="font-size:13px">${b.name}</strong>
-      <span class="tag ${b.type==='solar'?'tag-solar':'tag-lunar'}">${b.type==='solar'?'公历':'农历'}</span>
-      <span style="font-size:10px;color:#b0a0a8">${b.desc||''}</span></div>
-      <div class="item-actions"><span style="font-size:10px;color:#b0a0a8;white-space:nowrap">${b.daysLeft}天后</span>
-      <button class="btn btn-danger btn-sm" onclick="DB.delBday(${b.index})">删</button></div></div>`).join('');
-  _el('birthdayList').innerHTML=listHtml||'<div class="empty-state"><span class="icon">🎂</span>还没有添加生日<br><small>可以添加20+人的生日哦</small></div>';
+  var upcoming=[];
+  bdays.forEach(function(b){
+    var ni=calcNextBday(b,now);
+    if(ni.daysLeft<=30)upcoming.push({name:b.name,daysLeft:ni.daysLeft,date:ni.date});
+  });
+  upcoming.sort(function(a,b){return a.daysLeft-b.daysLeft});
+  var nextHtml='<h4 style="font-size:12px;color:#b090a0;margin-bottom:6px">📅 最近30天生日提醒</h4>';
+  if(upcoming.length===0)nextHtml+='<p style="font-size:12px;color:#c0a0b0">近期没有生日</p>';
+  else upcoming.forEach(function(u){nextHtml+='<div style="font-size:13px;padding:4px 0">🎂 '+u.name+' - '+u.date+' ('+(u.daysLeft===0?'今天!':'还有'+u.daysLeft+'天')+')</div>'});
+  _el("birthdayNext").innerHTML=nextHtml;
 }
 
 function calcNextBday(b,now){
-  let ty=now.getFullYear();
-  if(b.type==='solar'){
-    for(let y=ty;y<=ty+4;y++){
-      let nd=new Date(y,b.month-1,b.day);nd.setHours(0,0,0,0);
-      let diff=Math.ceil((nd-now)/86400000);
-      if(diff>=0)return{daysLeft:diff,nextDateStr:`${y}/${b.month}/${b.day}`,desc:`${b.month}月${b.day}日`};
-    }
+  var bm=parseInt(b.month),bd=parseInt(b.day);
+  if(b.type==="solar"){
+    var thisYear=new Date(now.getFullYear(),bm-1,bd);
+    if(thisYear<now)thisYear.setFullYear(thisYear.getFullYear()+1);
+    var daysLeft=Math.ceil((thisYear-now)/86400000);
+    return{daysLeft:daysLeft,date:thisYear.getFullYear()+"/"+bm+"/"+bd};
   }else{
-    let foundAll=[];
-    for(let sy=ty;sy<=ty+4;sy++){
-      for(let sm=1;sm<=12;sm++){
-        for(let sd=1;sd<=31;sd++){
-          try{let lu=solar2lunar(sy,sm,sd);if(lu.lmonth===b.month&&lu.lday===b.day&&!lu.isLeap){
-            let nd=new Date(sy,sm-1,sd);nd.setHours(0,0,0,0);let diff=Math.ceil((nd-now)/86400000);
-            if(diff>=0)foundAll.push({daysLeft:diff,nextDateStr:`${sy}/${sm}/${sd}(农历)`,desc:`农历${lu.lmonthName}${lu.ldayName}`});
-          }}catch(e){}
-        }
-      }
+    var d=new Date(now);
+    for(var i=0;i<400;i++){
+      var lun=solar2lunar(d.getFullYear(),d.getMonth()+1,d.getDate());
+      if(lun.lmonth===bm&&lun.lday===bd&&!lun.isLeap)return{daysLeft:i,date:_fmt(d)};
+      d.setDate(d.getDate()+1);
     }
-    foundAll.sort((a,b)=>a.daysLeft-b.daysLeft);
-    if(foundAll.length>0)return foundAll[0];
+    return{daysLeft:365,date:"?"};
   }
-  return{daysLeft:999,nextDateStr:'',desc:b.month+'月'+b.day+'日'};
 }
 
 function showBirthdayForm(){
-  _el('modalContainer').innerHTML=`
-    <div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
-      <h3>🎂 添加生日</h3>
-      <div class="form-group"><label>姓名</label><input id="bname" placeholder="例如: 妈妈"></div>
-      <div class="form-group"><label>日历类型</label><select id="btype"><option value="solar">公历 (国历)</option><option value="lunar">农历</option></select></div>
-      <div class="form-row"><div class="form-group"><label>月</label><select id="bmonth">${Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}月</option>`).join('')}</select></div>
-      <div class="form-group"><label>日</label><select id="bday">${Array.from({length:31},(_,i)=>`<option value="${i+1}">${i+1}日</option>`).join('')}</select></div></div>
-      <button class="btn btn-primary btn-block" onclick="saveBday()">💾 保存</button></div></div>`;
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>🎂 添加生日</h3><div class="form-group"><input id="bname" placeholder="姓名"></div><div class="form-group"><select id="btype"><option value="solar">国历</option><option value="lunar">农历</option></select></div><div class="form-row"><div class="form-group"><input id="bmonth" type="number" placeholder="月" min="1" max="12"></div><div class="form-group"><input id="bday" type="number" placeholder="日" min="1" max="31"></div></div><button class="btn btn-primary btn-block" onclick="saveBday()">保存</button></div></div>';
 }
-function saveBday(){let name=_el('bname').value.trim(),type=_el('btype').value,month=parseInt(_el('bmonth').value),day=parseInt(_el('bday').value);
-  if(!name){alert('请输入姓名');return};DB.addBday({name,type,month,day});closeModal();showToast('🎂 生日已添加');}
-function closeModal(e){if(!e||e.target.classList.contains('modal-overlay'))_el('modalContainer').innerHTML=''}
 
-// ==================== 生理期 ====================
+function saveBday(){
+  var name=_el("bname").value.trim(),type=_el("btype").value,month=parseInt(_el("bmonth").value),day=parseInt(_el("bday").value);
+  if(!name||!month||!day)return showToast("请填写完整");
+  DB.addBday({name:name,type:type,month:month,day:day});closeModal();showToast("已添加 "+name+" 的生日 🎂");
+}
+
+function editBdayForm(i){
+  var b=DB.bdays()[i];
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>✏️ 编辑生日</h3><div class="form-group"><input id="bname" value="'+b.name+'" placeholder="姓名"></div><div class="form-group"><select id="btype"><option value="solar"'+(b.type==="solar"?' selected':'')+'>国历</option><option value="lunar"'+(b.type==="lunar"?' selected':'')+'>农历</option></select></div><div class="form-row"><div class="form-group"><input id="bmonth" type="number" value="'+b.month+'" placeholder="月" min="1" max="12"></div><div class="form-group"><input id="bday" type="number" value="'+b.day+'" placeholder="日" min="1" max="31"></div></div><button class="btn btn-primary btn-block" onclick="saveEditBday('+i+')">保存修改</button></div></div>';
+}
+
+function saveEditBday(i){
+  var name=_el("bname").value.trim(),type=_el("btype").value,month=parseInt(_el("bmonth").value),day=parseInt(_el("bday").value);
+  if(!name||!month||!day)return showToast("请填写完整");
+  DB.updateBday(i,{name:name,type:type,month:month,day:day});closeModal();showToast("生日已更新 🎂");
+}
+
+function closeModal(e){if(!e||e.target.classList.contains("modal-overlay"))_el("modalContainer").innerHTML=""}
+
+// ==================== 生理期面板 ====================
 function renderPeriod(){
-  let ps=DB.periods();
-  if(ps.length===0){_el('periodStats').innerHTML='<div class="empty-state"><span class="icon">🌸</span>还没有记录<br><small>点击按钮记录第一次</small></div>';_el('periodPrediction').innerHTML='';_el('periodHistory').innerHTML='';return;}
-  let last=ps[ps.length-1],cycleLen=28,periodLen=5;
-  if(ps.length>=2){let diffs=[];for(let i=1;i<ps.length;i++)diffs.push(Math.round((new Date(ps[i].start)-new Date(ps[i-1].start))/86400000));
-    if(diffs.length>0)cycleLen=Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length);
-    periodLen=Math.round(ps.reduce((a,b)=>a+b.duration,0)/ps.length);}
-  let now=new Date();now.setHours(0,0,0,0);
+  var periods=DB.periods();
+  var pred=calculatePrediction(periods);
+  var today=new Date();today.setHours(0,0,0,0);
 
-  // Check if today is in a recorded period
-  let todayInPeriod=false;
-  ps.forEach(p=>{
-    let sd=new Date(p.start),ed=new Date(p.start);ed.setDate(ed.getDate()+p.duration-1);
-    if(now>=sd&&now<=ed)todayInPeriod=true;
-  });
-
-  // Predict future cycles (only show ones after today)
-  let predCycles=[];
-  let lastStart=new Date(last.start);
-  for(let cyc=1;cyc<=4;cyc++){
-    let ps2=new Date(lastStart);ps2.setDate(ps2.getDate()+cycleLen*cyc);
-    if(ps2>now||cyc===1){
-      let pe=new Date(ps2);pe.setDate(pe.getDate()+periodLen-1);
-      let ov=new Date(ps2);ov.setDate(ov.getDate()-14);
-      let du=Math.ceil((ps2-now)/86400000);
-      let phase,pc;
-      if(du<0&&Math.abs(du)<periodLen){phase='可能经期中';pc='#e5396a'}
-      else if(du>=0&&du<periodLen){phase='预计经期临近';pc='#e5396a'}
-      else if(du>=0&&du<=16){phase='排卵期附近';pc='#5c9ce6'}else{phase='安全期';pc='#66bb6a'}
-      predCycles.push({ps:ps2,pe,ov,du,phase,pc});
-    }
+  var humaneHtml="";
+  if(!periods||periods.length===0){
+    humaneHtml="🌸 欢迎使用生理期记录！<br>点击下方按钮记录你的第一次月经，系统会在记录 2-3 次后开始智能预测。";
+  }else{
+    humaneHtml=pred.message.replace(/\n/g,"<br>");
+    var unended=periods.filter(function(p){return !p.endDate});
+    if(unended.length>0)humaneHtml+='<br><span style="color:var(--gold)">💡 这次经期结束了吗？可以补充记录哦</span>';
+    if(pred.daysUntil<0&&!pred.inPeriod&&periods.length>=2)humaneHtml+='<br><span style="color:var(--gold)">⚠️ 本次经期比预测推迟了 '+Math.abs(pred.daysUntil)+' 天，要记录一下吗？</span>';
   }
+  _el("periodHumane").innerHTML=humaneHtml;
 
-  let statusText='';
-  if(todayInPeriod){statusText='<span style="color:#e5396a;font-weight:700">🔴 当前正在经期中</span>'}
-  else if(predCycles.length>0&&predCycles[0].du<=periodLen){statusText=`<span style="color:#e5396a;font-weight:700">⚠️ 预计经期临近 (${predCycles[0].du}天后)</span>`}
-  else{statusText='<span style="color:#66bb6a">✅ 安全期</span>'}
+  // 统计
+  var statsHtml='';
+  statsHtml+='<div class="period-stat"><div class="val">'+periods.length+'</div><div class="lbl">📋 记录次数</div></div>';
+  statsHtml+='<div class="period-stat"><div class="val">'+pred.cycleLen+'</div><div class="lbl">📅 平均周期(天)</div></div>';
+  statsHtml+='<div class="period-stat"><div class="val">'+pred.periodLen+'</div><div class="lbl">🩸 平均经期(天)</div></div>';
+  _el("periodStats").innerHTML=statsHtml;
 
-  _el('periodStats').innerHTML=`<div>${statusText}</div><div class="stats-grid" style="margin-top:8px"><div class="stat-card"><div class="val">${cycleLen}</div><div class="lbl">平均周期(天)</div></div><div class="stat-card"><div class="val">${periodLen}</div><div class="lbl">持续天数</div></div><div class="stat-card"><div class="val">${ps.length}</div><div class="lbl">已记录次数</div></div></div>`;
-  _el('periodPrediction').innerHTML=`<div class="prediction"><strong>📅 未来预测:</strong><br>`+
-    predCycles.slice(0,3).map((p,i)=>`${i===0?'👉 ':''}第${i+1}次: ${_fmt(p.ps)} ~ ${_fmt(p.pe)} | 🥚 ${_fmt(p.ov)} <span style="color:${p.pc};font-weight:600">[${p.phase}]</span>`).join('<br>')+
-    `<div class="cycle-bar" style="margin-top:8px"><div class="cycle-period" style="width:${Math.round(periodLen/cycleLen*100)}%"></div><div class="cycle-safe" style="width:${Math.round(5/cycleLen*100)}%"></div><div class="cycle-normal" style="flex:1"></div></div><small style="color:#b0a0a8">🔴经期 ▲排卵 ▶安全</small></div>`;
-  let histHtml=ps.slice().reverse().slice(0,8).map((p,i)=>{let idx=ps.length-1-i;let sd=new Date(p.start),ed=new Date(p.start);ed.setDate(ed.getDate()+p.duration-1);
-    return`<div class="item-row"><span>${idx===ps.length-1?'🔴 ':''}${_fmt(sd)}~${_fmt(ed)} (${p.duration}天)</span><button class="btn btn-danger btn-sm" onclick="DB.delPeriod(${idx})">删</button></div>`}).join('');
-  _el('periodHistory').innerHTML=histHtml?`<div style="font-size:12px;color:#b0a0a8;margin-top:8px">最近记录</div>${histHtml}`:'';
+  if(periods.length>0){
+    var predHtml='<h4 style="font-size:12px;color:#b090a0">📊 预测详情</h4><div class="pred-line">';
+    predHtml+='🩸 预计下次: <strong>'+pred.nextStart+' ~ '+pred.nextEnd+'</strong><br>';
+    predHtml+='🥚 排卵日: <strong>'+pred.ovDay+'</strong><br>';
+    predHtml+='💜 易孕期: '+pred.fertileStart+' ~ '+pred.fertileEnd+'<br></div>';
+    predHtml+='<div class="pred-disclaimer">';
+    if(pred.confidence==="low")predHtml+='⚠️ 数据较少（少于2次有效记录），预测仅供参考';
+    else if(pred.confidence==="medium")predHtml+='📊 基于 '+periods.length+' 次记录预测（置信度：中）';
+    else predHtml+='✅ 基于近6次记录预测（置信度：高）';
+    predHtml+='</div>';
+    _el("predictionCard").style.display="block";
+    _el("predictionCard").innerHTML=predHtml;
+  }else{_el("predictionCard").style.display="none"}
+
+  // 提醒
+  var reminders=DB.periodReminders();
+  var remHtml='<h4 style="font-size:12px;color:#b090a0;margin-top:10px">🔔 提醒设置</h4>';
+  remHtml+='<div class="reminder-row"><label>经期开始前提醒</label><div class="toggle-sw'+(reminders.beforePeriod?' on':'')+'" onclick="toggleReminder(\'beforePeriod\')"></div></div>';
+  remHtml+='<div class="reminder-row"><label>排卵期提醒</label><div class="toggle-sw'+(reminders.ovulation?' on':'')+'" onclick="toggleReminder(\'ovulation\')"></div></div>';
+  remHtml+='<div class="reminder-row"><label>长时间未记录提醒</label><div class="toggle-sw'+(reminders.longGap?' on':'')+'" onclick="toggleReminder(\'longGap\')"></div></div>';
+  _el("periodReminders").innerHTML=remHtml;
+
+  // 历史
+  var histHtml='<h4 style="font-size:12px;color:#b090a0;margin-top:4px;margin-bottom:6px">📜 历史记录</h4>';
+  if(periods.length===0)histHtml+='<p style="font-size:12px;color:#c0a0b0">还没有记录</p>';
+  else{
+    periods.slice().reverse().forEach(function(p){
+      histHtml+='<div class="history-item"><div class="hi-dates">'+p.startDate;
+      if(p.endDate)histHtml+=' ~ '+p.endDate;
+      else histHtml+=' <span class="pending">待补结束日</span>';
+      if(p.flowLevel)histHtml+=' '+'🩸'.repeat(p.flowLevel);
+      if(p.cramps)histHtml+=' '+'😣'.repeat(p.cramps);
+      if(p.symptoms&&p.symptoms.length>0)histHtml+='<br><span style="font-size:10px;color:#c0a0b0">'+p.symptoms.join('、')+'</span>';
+      histHtml+='</div><div class="item-actions">';
+      if(!p.endDate)histHtml+='<button class="btn btn-success btn-sm" onclick="showEndPeriodForm(\''+p.id+'\')">补录</button>';
+      histHtml+='<button class="btn btn-outline btn-sm" onclick="showEditPeriodForm(\''+p.id+'\')">✏️</button>';
+      histHtml+='<button class="btn btn-danger btn-sm" onclick="delPeriodConfirm(\''+p.id+'\')">🗑</button>';
+      histHtml+='</div></div>';
+    });
+  }
+  _el("periodHistory").innerHTML=histHtml;
 }
 
+function toggleReminder(key){
+  var r=DB.periodReminders();r[key]=!r[key];DB.setPeriodReminders(r);renderPeriod();
+}
+
+// ==================== 生理期表单 ====================
 function showPeriodForm(){
-  let ds=new Date().toISOString().slice(0,10);
-  _el('modalContainer').innerHTML=`<div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()"><h3>🌸 记录生理期</h3>
-    <div class="form-group"><label>开始日期</label><input type="date" id="pstart" value="${ds}"></div>
-    <div class="form-group"><label>持续天数</label><input type="number" id="pduration" value="5" min="1" max="15"></div>
-    <button class="btn btn-primary btn-block" onclick="savePeriod()">💾 保存</button></div></div>`;
-}
-function savePeriod(){let start=_el('pstart').value,dur=parseInt(_el('pduration').value)||5;if(!start)return;DB.addPeriod({start,duration:dur});closeModal();showToast('🌸 已记录');}
-
-
-// ==================== 任务系统 (用户自定义) ====================
-function getDefaultTasks(){
-  let userTasks=DB.userTasks();
-  if(userTasks.length>0)return userTasks;
-  // 首次使用：提供默认模板
-  return [
-    {id:1,name:'早睡 (23:00前)',xp:20,icon:'🌙'},{id:2,name:'早起 (7:30前)',xp:20,icon:'☀️'},
-    {id:3,name:'运动30分钟',xp:30,icon:'🏃'},{id:4,name:'喝水8杯',xp:15,icon:'💧'},
-    {id:5,name:'阅读30分钟',xp:25,icon:'📖'},{id:6,name:'冥想10分钟',xp:20,icon:'🧘'},
-    {id:7,name:'记录小确幸',xp:15,icon:'⭐'}
-  ];
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>🩸 记录月经</h3>';
+  var html='';
+  html+='<div class="form-group"><label>开始日期</label><input type="date" id="pstart" value="'+new Date().toISOString().slice(0,10)+'"></div>';
+  html+='<div class="form-group"><label>结束日期（可选，之后可补录）</label><input type="date" id="pend"></div>';
+  html+='<div class="form-group"><label>经量</label><div class="flow-selector">';
+  for(var i=1;i<=5;i++)html+='<div class="flow-btn" onclick="setFlow('+i+')">'+'🩸'.repeat(i)+'</div>';
+  html+='</div><input type="hidden" id="pflowVal" value=""></div>';
+  html+='<div class="form-group"><label>痛经程度</label><select id="pcramps"><option value="">无</option><option value="1">轻微 😣</option><option value="2">中度 😣😣</option><option value="3">严重 😣😣😣</option></select></div>';
+  html+='<div class="form-group"><label>症状（可多选）</label><div class="symptom-tags" id="symptomTags">';
+  ["头痛","腰酸","乳房胀痛","疲劳","情绪波动","腹胀","失眠","食欲变化","长痘","便秘","腹泻","怕冷"].forEach(function(t){html+='<span class="symptom-tag" onclick="this.classList.toggle(\'selected\')">'+t+'</span>'});
+  html+='</div></div>';
+  html+='<div class="form-group"><label>备注</label><textarea id="pnotes" placeholder="其他想记录的内容..."></textarea></div>';
+  html+='<button class="btn btn-primary btn-block" onclick="savePeriod()">💾 保存记录</button>';
+  _el("modalContainer").innerHTML+=html+'</div></div>';
 }
 
-function initTasks(){
-  let tk=_todayKey(),xpData=DB.xp();
-  if(!xpData.lastDate||xpData.lastDate!==tk){xpData.lastDate=tk;xpData.th={};DB.saveXp(xpData);}
-  let saved=DB.getTasks(tk);
-  if(!saved){DB.saveTasks(tk,JSON.parse(JSON.stringify(getDefaultTasks())));}
-  renderTasks();
-}
-function renderTasks(){
-  let tk=_todayKey(),xpData=DB.xp(),tasks=DB.getTasks(tk)||[];
-  let doneCount=tasks.filter(t=>t.done).length;
-  let level=xpData.level||1,totalXP=xpData.xp||0,xpForNext=level*100,xpInLevel=totalXP%xpForNext;
-  _el('lvBadge').innerHTML=`⚡ Lv.${level}`;_el('xpFill').style.width=Math.min(100,Math.round(xpInLevel/xpForNext*100))+'%';
-  _el('xpText').textContent=`${xpInLevel}/${xpForNext}`;_el('statStreak').textContent=xpData.streak||0;
-  _el('statTotal').textContent=xpData.completed||0;_el('statDay').textContent=doneCount;
-  _el('taskList').innerHTML=tasks.map(t=>`<div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})"><div class="check">${t.done?'✓':''}</div><span class="task-name">${t.icon||''} ${t.name}</span><span class="task-xp">+${t.xp} XP</span><span class="task-del" onclick="event.stopPropagation();deleteUserTask(${t.id})">✕</span></div>`).join('');
-}
-function toggleTask(id){let tk=_todayKey(),tasks=DB.getTasks(tk)||[],xpData=DB.xp();if(!xpData.th)xpData.th={};if(!xpData.th[tk])xpData.th[tk]={};let task=tasks.find(t=>t.id===id);if(!task)return;task.done=!task.done;
-  if(task.done){xpData.xp+=task.xp;xpData.completed=(xpData.completed||0)+1;xpData.th[tk][id]=true;}
-  else{xpData.xp=Math.max(0,xpData.xp-task.xp);xpData.completed=Math.max(0,xpData.completed-1);delete xpData.th[tk][id];}
-  xpData.streak=calcStreak(xpData);let nl=Math.floor(xpData.xp/100)+1;if(nl>(xpData.level||1)){xpData.level=nl;showToast('🎉 升级! Lv.'+nl+'!');}
-  DB.saveXp(xpData);DB.saveTasks(tk,tasks);renderTasks();}
-function calcStreak(xpData){let s=0,d=new Date();for(let i=0;i<365;i++){let k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(Object.values(xpData.th[k]||{}).some(v=>v))s++;else break;d.setDate(d.getDate()-1);}return s;}
-function addXP(amount){let xp=DB.xp();xp.xp+=amount;xp.completed=(xp.completed||0)+1;let nl=Math.floor(xp.xp/100)+1;if(nl>(xp.level||1)){xp.level=nl;showToast('🎉 升级! Lv.'+nl+'!');}xp.streak=calcStreak(xp);DB.saveXp(xp);let tk=_todayKey(),saved=DB.getTasks(tk);if(saved)renderTasks();}
-function resetDailyTasks(){DB.saveTasks(_todayKey(),JSON.parse(JSON.stringify(getDefaultTasks())));renderTasks();showToast('🔄 任务已重置');}
+function setFlow(n){_el("pflowVal").value=n;_el("modalContainer").querySelectorAll(".flow-btn").forEach(function(b,i){b.classList.toggle("selected",i+1===n)})}
 
-// Custom task management
-function showAddTaskForm(){
-  _el('modalContainer').innerHTML=`
-    <div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
-      <h3>➕ 添加自定义任务</h3>
-      <div class="form-group"><label>任务名称</label><input id="tname" placeholder="例如: 学英语1小时"></div>
-      <div class="form-row">
-        <div class="form-group"><label>图标 (emoji)</label><input id="ticon" placeholder="📚" maxlength="2"></div>
-        <div class="form-group"><label>经验值</label><input type="number" id="txp" value="20" min="5" max="100"></div>
-      </div>
-      <button class="btn btn-primary btn-block" onclick="saveCustomTask()">💾 添加到任务模板</button>
-      <div style="margin-top:10px;font-size:11px;color:#b0a0a8">添加后将出现在每日任务中，也会在重置时恢复</div>
-    </div></div>`;
-}
-function saveCustomTask(){
-  let name=_el('tname').value.trim(),icon=_el('ticon').value.trim()||'📌',xp=parseInt(_el('txp').value)||20;
-  if(!name){alert('请输入任务名称');return}
-  let ut=DB.userTasks();
-  let maxId=ut.reduce((m,t)=>Math.max(m,t.id),0);
-  ut.push({id:maxId+1,name,icon:icon||'📌',xp});
-  DB.setUserTasks(ut);
-  closeModal();
-  // Also update today's tasks
-  let tk=_todayKey(),todayTasks=DB.getTasks(tk)||getDefaultTasks();
-  todayTasks.push({id:maxId+1,name,icon:icon||'📌',xp,done:false});
-  DB.saveTasks(tk,todayTasks);
-  renderTasks();
-  showToast('✅ 任务已添加');
-}
-function deleteUserTask(id){
-  if(!confirm('确定从任务模板中删除此任务？'))return;
-  let ut=DB.userTasks().filter(t=>t.id!==id);
-  DB.setUserTasks(ut);
-  let tk=_todayKey(),todayTasks=(DB.getTasks(tk)||[]).filter(t=>t.id!==id);
-  DB.saveTasks(tk,todayTasks);
-  renderTasks();
-  showToast('🗑️ 任务已删除');
+function savePeriod(){
+  var start=_el("pstart").value,end=_el("pend").value;
+  if(!start)return showToast("请选择开始日期");
+  var startFmt=start.replace(/-/g,"/"),endFmt=end?end.replace(/-/g,"/"):null;
+  if(endFmt&&_parseDate(endFmt)<_parseDate(startFmt))return showToast("结束日期不能早于开始日期");
+  var flow=_el("pflowVal").value?parseInt(_el("pflowVal").value):null;
+  var cramps=_el("pcramps").value?parseInt(_el("pcramps").value):null;
+  var symptomEls=_el("modalContainer").querySelectorAll(".symptom-tag.selected");
+  var symptoms=[];symptomEls.forEach(function(s){symptoms.push(s.textContent)});
+  var notes=_el("pnotes").value.trim();
+  DB.addPeriod({startDate:startFmt,endDate:endFmt,flowLevel:flow,cramps:cramps,symptoms:symptoms,mood:"",notes:notes});
+  closeModal();showToast("已记录月经 🌸");
 }
 
-// ==================== 数据导出/导入 ====================
-function exportData(){
-  let data={bdays:DB.bdays(),periods:DB.periods(),diary:DB.diary(),tasks:DB.tasks(),xp:DB.xp(),symptoms:DB.symptoms(),userTasks:DB.userTasks()};
-  let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  let a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='健康生活记录_备份_'+new Date().toISOString().slice(0,10)+'.json';a.click();
-  showToast('📤 数据已导出');
-}
-function importData(e){
-  let file=e.target.files[0];if(!file)return;
-  let reader=new FileReader();
-  reader.onload=function(ev){
-    try{
-      let data=JSON.parse(ev.target.result);
-      if(data.bdays)DB.set('bdays',data.bdays);
-      if(data.periods)DB.set('periods',data.periods);
-      if(data.diary)DB.set('diary',data.diary);
-      if(data.tasks)DB.set('tasks',data.tasks);
-      if(data.xp)DB.set('xp',data.xp);
-      if(data.symptoms)DB.set('symptoms',data.symptoms);
-      if(data.userTasks)DB.set('userTasks',data.userTasks);
-      showToast('📥 数据已导入，刷新页面生效');
-      setTimeout(()=>location.reload(),1500);
-    }catch(ex){alert('导入失败：文件格式错误');}
-  };
-  reader.readAsText(file);
-  e.target.value='';
+function showEndPeriodForm(id){
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>📝 补充结束日期</h3><div class="form-group"><label>结束日期</label><input type="date" id="pendDate" value="'+new Date().toISOString().slice(0,10)+'"></div><button class="btn btn-primary btn-block" onclick="saveEndPeriod(\''+id+'\')">保存</button></div></div>';
 }
 
-// ==================== 任务自动重置 ====================
-let _lastDateCheck=_todayKey();
-setInterval(()=>{
-  let tk=_todayKey();
-  if(tk!==_lastDateCheck){
-    _lastDateCheck=tk;
-    let xpData=DB.xp();
-    if(!xpData.lastDate||xpData.lastDate!==tk){xpData.lastDate=tk;xpData.th={};DB.saveXp(xpData);}
-    if(!DB.getTasks(tk))DB.saveTasks(tk,JSON.parse(JSON.stringify(getDefaultTasks())));
-  }
-},30000);
+function saveEndPeriod(id){
+  var end=_el("pendDate").value;if(!end)return;
+  var p=DB.getPeriodById(id);
+  if(p&&_parseDate(end.replace(/-/g,"/"))<_parseDate(p.startDate))return showToast("结束日期不能早于开始日期");
+  DB.updatePeriod(id,{endDate:end.replace(/-/g,"/")});
+  closeModal();showToast("已补充结束日期 ✅");
+}
 
-// ==================== 生日通知 ====================
-function checkBirthdayNotify(){
-  let bdays=DB.bdays(),now=new Date();now.setHours(0,0,0,0);
-  bdays.forEach(b=>{
-    let ni=calcNextBday(b,now);
-    if(ni.daysLeft===0){
-      let shown=sessionStorage.getItem('bd_notify_'+b.name+'_'+_todayKey());
-      if(!shown&&Notification.permission==='granted'){
-        new Notification('🎂 生日提醒',{body:'今天是 '+b.name+' 的生日！',icon:'🎂'});
-        sessionStorage.setItem('bd_notify_'+b.name+'_'+_todayKey(),'1');
-      }
-    }
-  });
+function showEditPeriodForm(id){
+  var p=DB.getPeriodById(id);if(!p)return;
+  var startISO=p.startDate.replace(/\//g,"-");
+  var endISO=p.endDate?p.endDate.replace(/\//g,"-"):"";
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>✏️ 修改记录</h3>';
+  var html='';
+  html+='<div class="form-group"><label>开始日期</label><input type="date" id="pstart" value="'+startISO+'"></div>';
+  html+='<div class="form-group"><label>结束日期</label><input type="date" id="pend" value="'+endISO+'"></div>';
+  html+='<div class="form-group"><label>经量</label><div class="flow-selector">';
+  for(var i=1;i<=5;i++)html+='<div class="flow-btn'+(p.flowLevel===i?' selected':'')+'" onclick="setFlow('+i+')">'+'🩸'.repeat(i)+'</div>';
+  html+='</div><input type="hidden" id="pflowVal" value="'+(p.flowLevel||'')+'"></div>';
+  html+='<div class="form-group"><label>痛经程度</label><select id="pcramps"><option value="">无</option><option value="1"'+(p.cramps===1?' selected':'')+'>轻微 😣</option><option value="2"'+(p.cramps===2?' selected':'')+'>中度 😣😣</option><option value="3"'+(p.cramps===3?' selected':'')+'>严重 😣😣😣</option></select></div>';
+  html+='<div class="form-group"><label>症状</label><div class="symptom-tags" id="symptomTags">';
+  ["头痛","腰酸","乳房胀痛","疲劳","情绪波动","腹胀","失眠","食欲变化","长痘","便秘","腹泻","怕冷"].forEach(function(t){html+='<span class="symptom-tag'+((p.symptoms||[]).indexOf(t)>=0?' selected':'')+'" onclick="this.classList.toggle(\'selected\')">'+t+'</span>'});
+  html+='</div></div>';
+  html+='<div class="form-group"><label>备注</label><textarea id="pnotes">'+(p.notes||'')+'</textarea></div>';
+  html+='<button class="btn btn-primary btn-block" onclick="saveEditPeriod(\''+id+'\')">保存修改</button>';
+  _el("modalContainer").innerHTML+=html+'</div></div>';
 }
-if('Notification' in window && Notification.permission==='default'){
-  setTimeout(()=>Notification.requestPermission(),3000);
+
+function saveEditPeriod(id){
+  var start=_el("pstart").value,end=_el("pend").value;
+  if(!start)return showToast("请选择开始日期");
+  var startFmt=start.replace(/-/g,"/"),endFmt=end?end.replace(/-/g,"/"):null;
+  if(endFmt&&_parseDate(endFmt)<_parseDate(startFmt))return showToast("结束日期不能早于开始日期");
+  var symptomEls=_el("modalContainer").querySelectorAll(".symptom-tag.selected");
+  var symptoms=[];symptomEls.forEach(function(s){symptoms.push(s.textContent)});
+  DB.updatePeriod(id,{startDate:startFmt,endDate:endFmt,flowLevel:_el("pflowVal").value?parseInt(_el("pflowVal").value):null,cramps:_el("pcramps").value?parseInt(_el("pcramps").value):null,symptoms:symptoms,notes:_el("pnotes").value.trim()});
+  closeModal();showToast("记录已更新 ✅");
 }
-setTimeout(checkBirthdayNotify,4000);
+
+function delPeriodConfirm(id){
+  _el("modalContainer").innerHTML='<div class="modal-overlay" onclick="closeModal(event)"><div class="modal"><h3>确认删除</h3><p style="margin-bottom:12px">确定要删除这条月经记录吗？此操作不可恢复。</p><div style="display:flex;gap:6px"><button class="btn btn-danger" onclick="DB.delPeriod(\''+id+'\');closeModal();showToast(\'已删除\')">确认删除</button><button class="btn btn-outline" onclick="closeModal()">取消</button></div></div></div>';
+}
 
 // ==================== 导航 ====================
 function switchPanel(name){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
-  let panel=_el('panel-'+name);if(panel)panel.classList.add('active');
-  let btn=document.querySelector('nav button[data-panel="'+name+'"]');if(btn)btn.classList.add('active');
-  if(name==='calendar')renderCal();
-  else if(name==='birthday')renderBdays();
-  else if(name==='period')renderPeriod();
-  else if(name==='task')renderTasks();
+  document.querySelectorAll(".panel").forEach(function(p){p.classList.remove("active")});
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.remove("active")});
+  var panel=_el("panel-"+name);if(panel)panel.classList.add("active");
+  var btn=document.querySelector('nav button[data-panel="'+name+'"]');if(btn)btn.classList.add("active");
+  if(name==="calendar")renderCal();
+  else if(name==="birthday")renderBdays();
+  else if(name==="period")renderPeriod();
 }
-document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>switchPanel(b.dataset.panel)));
+document.querySelectorAll("nav button").forEach(function(b){b.addEventListener("click",function(){switchPanel(b.dataset.panel)})});
 
-// ==================== 任务历史记录 ====================
-function showTaskHistory(){
-  let allTasks=DB.tasks(),xpData=DB.xp();
-  let dates=Object.keys(allTasks).sort().reverse();
-  let html='<div style="max-height:400px;overflow-y:auto">';
-  let totalXPEarned=0;
-  dates.forEach(dk=>{
-    let tasks=allTasks[dk]||[];
-    let doneTasks=tasks.filter(t=>t.done);
-    if(doneTasks.length===0)return;
-    let dayXP=doneTasks.reduce((s,t)=>s+t.xp,0);
-    totalXPEarned+=dayXP;
-    html+=`<div style="padding:8px;margin:4px 0;background:var(--bg);border-radius:8px;border-left:3px solid var(--accent)">
-      <strong style="font-size:12px;color:var(--accent)">📅 ${dk}</strong>
-      <span style="font-size:11px;color:var(--gold);float:right">+${dayXP} XP</span>
-      <div style="font-size:11px;color:var(--text);margin-top:4px">${doneTasks.map(t=>`✅ ${t.icon||''} ${t.name} (+${t.xp})`).join('<br>')}</div>
-    </div>`;
-  });
-  if(dates.length===0||totalXPEarned===0)html+='<div class="empty-state"><span class="icon">📋</span>还没有完成任务记录</div>';
-  html+=`</div><div style="margin-top:8px;text-align:center;font-size:12px;color:var(--gold)">🏆 累计获得: ${totalXPEarned} XP | 等级: Lv.${xpData.level||1}</div>`;
-  _el('modalContainer').innerHTML=`<div class="modal-overlay" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()"><h3>📋 历史任务记录</h3>${html}<button class="btn btn-outline btn-block" style="margin-top:10px" onclick="closeModal()">关闭</button></div></div>`;
-}
-function init(){initCal();renderBdays();renderPeriod();initTasks();}
+// ==================== 初始化 ====================
+function init(){initCal();renderBdays();renderPeriod()}
 init();
-
-// ==================== PWA Service Worker ====================
-if('serviceWorker' in navigator){
-  let swCode=`self.addEventListener('install',e=>{e.waitUntil(self.skipWaiting())});
-self.addEventListener('activate',e=>{e.waitUntil(self.clients.claim())});
-self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)))})`;
-  let blob=new Blob([swCode],{type:'application/javascript'});
-  let swUrl=URL.createObjectURL(blob);
-  navigator.serviceWorker.register(swUrl).catch(()=>{});
-}
-
-// PWA Install prompt
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e});
-function installApp(){
-  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(r=>{deferredPrompt=null})}
-  else{alert('安装提示:\n\n1. 在Chrome浏览器中打开此页面\n2. 点击右上角 ⋮ 菜单\n3. 选择"添加到主屏幕"\n\n或使用Safari: 点击底部分享 → 添加到主屏幕')}
-}
 </script></body></html>
+
