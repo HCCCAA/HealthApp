@@ -9,11 +9,12 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.5'
-      - run: gradle wrapper --gradle-version 8.5
-      - run: gradle assembleDebug
+      - name: Generate Gradle Wrapper
+        working-directory: ${{ github.workspace }}
+        run: gradle wrapper --gradle-version 8.5
+      - name: Build APK
+        working-directory: ${{ github.workspace }}
+        run: ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
           name: HealthApp-APK
